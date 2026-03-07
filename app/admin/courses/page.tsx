@@ -29,6 +29,42 @@ async function createCourse(formData: FormData) {
   revalidatePath("/admin/courses");
 }
 
+async function deleteCourse(formData: FormData) {
+  "use server";
+
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const id = String(formData.get("id") ?? "");
+
+  if (!id) {
+    return;
+  }
+
+  const enrollmentCount = await prisma.enrollment.count({
+    where: {
+      courseId: id,
+    },
+  });
+
+  if (enrollmentCount > 0) {
+    throw new Error(
+      "Impossible de supprimer ce cours car il possède encore des inscriptions."
+    );
+  }
+
+  await prisma.course.delete({
+    where: {
+      id,
+    },
+  });
+
+  revalidatePath("/admin/courses");
+}
+
 export default async function CoursesPage() {
   const session = await getSession();
 
@@ -70,11 +106,23 @@ export default async function CoursesPage() {
           <p>Aucun cours pour le moment.</p>
         ) : (
           courses.map((course) => (
-            <div key={course.id} className="border p-3 rounded">
-              <strong>{course.title}</strong>
-              <div className="text-sm text-gray-600">
-                Capacité : {course.capacity}
+            <div
+              key={course.id}
+              className="border p-3 rounded flex justify-between items-center"
+            >
+              <div>
+                <strong>{course.title}</strong>
+                <div className="text-sm text-gray-600">
+                  Capacité : {course.capacity}
+                </div>
               </div>
+
+              <form action={deleteCourse}>
+                <input type="hidden" name="id" value={course.id} />
+                <button type="submit" className="text-red-600 text-sm">
+                  Supprimer
+                </button>
+              </form>
             </div>
           ))
         )}
