@@ -83,6 +83,28 @@ async function createEnrollment(
   };
 }
 
+async function deleteEnrollment(formData: FormData) {
+  "use server";
+
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const id = String(formData.get("id") ?? "");
+
+  if (!id) {
+    return;
+  }
+
+  await prisma.enrollment.delete({
+    where: { id },
+  });
+
+  revalidatePath("/admin/enrollments");
+}
+
 export default async function EnrollmentsPage() {
   const session = await getSession();
 
@@ -125,7 +147,7 @@ export default async function EnrollmentsPage() {
           <p>Aucune inscription pour le moment.</p>
         ) : (
           enrollments.map((enrollment) => (
-            <div key={enrollment.id} className="border p-3 rounded">
+            /**<div key={enrollment.id} className="border p-3 rounded">
               <strong>
                 {enrollment.student.firstName} {enrollment.student.lastName}
               </strong>
@@ -135,6 +157,29 @@ export default async function EnrollmentsPage() {
               <div className="text-sm">
                 Cours : {enrollment.course.title}
               </div>
+            </div>**/
+            <div key={enrollment.id} className="border p-3 rounded flex justify-between items-center">
+              <div>
+                <strong>
+                  {enrollment.student.firstName} {enrollment.student.lastName}
+                </strong>
+                <div className="text-sm text-gray-600">
+                  {enrollment.student.user.email}
+                </div>
+                <div className="text-sm">
+                  Cours : {enrollment.course.title}
+                </div>
+              </div>
+
+              <form action={deleteEnrollment}>
+                <input type="hidden" name="id" value={enrollment.id} />
+                <button
+                  type="submit"
+                  className="text-red-600 text-sm"
+                >
+                  Supprimer
+                </button>
+              </form>
             </div>
           ))
         )}
