@@ -62,10 +62,33 @@ export default async function StudentsPage() {
       <h1 className="text-2xl font-bold">Étudiants</h1>
 
       <form action={createStudent} className="space-y-3 max-w-md border p-4 rounded">
-        <input name="firstName" placeholder="Prénom" className="w-full border px-3 py-2 rounded" />
-        <input name="lastName" placeholder="Nom" className="w-full border px-3 py-2 rounded" />
-        <input name="email" type="email" placeholder="Email" className="w-full border px-3 py-2 rounded" />
-        <input name="password" type="password" placeholder="Mot de passe" className="w-full border px-3 py-2 rounded" />
+        <input 
+          name="firstName" 
+          placeholder="Prénom" 
+          className="w-full border px-3 py-2 rounded" 
+          required
+        />
+
+        <input 
+          name="lastName" 
+          placeholder="Nom" 
+          className="w-full border px-3 py-2 rounded" 
+          required
+        />
+        <input 
+          name="email" 
+          type="email" 
+          placeholder="Email" 
+          className="w-full border px-3 py-2 rounded" 
+          required
+        />
+        <input 
+          name="password" 
+          type="password" 
+          placeholder="Mot de passe" 
+          className="w-full border px-3 py-2 rounded" 
+          required
+        />
 
         <button type="submit" className="border px-4 py-2 rounded">
           Créer étudiant
