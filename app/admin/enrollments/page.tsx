@@ -2,8 +2,17 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
+import EnrollmentForm from "./EnrollmentForm";
 
-async function createEnrollment(formData: FormData) {
+type FormState = {
+  error: string | null;
+  success: string | null;
+};
+
+async function createEnrollment(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   "use server";
 
   const session = await getSession();
@@ -16,7 +25,10 @@ async function createEnrollment(formData: FormData) {
   const courseId = String(formData.get("courseId") ?? "");
 
   if (!studentId || !courseId) {
-    throw new Error("Étudiant et cours obligatoires");
+    return {
+      error: "Étudiant et cours obligatoires",
+      success: null,
+    };
   }
 
   const course = await prisma.course.findUnique({
@@ -27,11 +39,17 @@ async function createEnrollment(formData: FormData) {
   });
 
   if (!course) {
-    throw new Error("Cours introuvable");
+    return {
+      error: "Cours introuvable",
+      success: null,
+    };
   }
 
   if (course.enrollments.length >= course.capacity) {
-    throw new Error("Capacité maximale atteinte");
+    return {
+      error: "Capacité maximale atteinte",
+      success: null,
+    };
   }
 
   const existingEnrollment = await prisma.enrollment.findUnique({
@@ -44,7 +62,10 @@ async function createEnrollment(formData: FormData) {
   });
 
   if (existingEnrollment) {
-    throw new Error("Cet étudiant est déjà inscrit à ce cours");
+    return {
+      error: "Cet étudiant est déjà inscrit à ce cours",
+      success: null,
+    };
   }
 
   await prisma.enrollment.create({
@@ -55,6 +76,11 @@ async function createEnrollment(formData: FormData) {
   });
 
   revalidatePath("/admin/enrollments");
+
+  return {
+    error: null,
+    success: "Inscription créée avec succès",
+  };
 }
 
 export default async function EnrollmentsPage() {
@@ -88,43 +114,11 @@ export default async function EnrollmentsPage() {
     <main className="p-8 space-y-6">
       <h1 className="text-2xl font-bold">Inscriptions</h1>
 
-      <form action={createEnrollment} className="space-y-3 max-w-md border p-4 rounded">
-        <select
-          name="studentId"
-          className="w-full border px-3 py-2 rounded"
-          required
-          defaultValue=""
-        >
-          <option value="" disabled>
-            Choisir un étudiant
-          </option>
-          {students.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.firstName} {student.lastName} - {student.user.email}
-            </option>
-          ))}
-        </select>
-
-        <select
-          name="courseId"
-          className="w-full border px-3 py-2 rounded"
-          required
-          defaultValue=""
-        >
-          <option value="" disabled>
-            Choisir un cours
-          </option>
-          {courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.title} (capacité : {course.capacity})
-            </option>
-          ))}
-        </select>
-
-        <button type="submit" className="border px-4 py-2 rounded">
-          Créer inscription
-        </button>
-      </form>
+      <EnrollmentForm
+        students={students}
+        courses={courses}
+        createEnrollment={createEnrollment}
+      />
 
       <div className="space-y-2">
         {enrollments.length === 0 ? (
