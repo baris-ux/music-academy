@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { createSession } from "@/lib/session";
 import argon2 from "argon2";
 
 async function login(formData: FormData) {
@@ -24,6 +25,16 @@ async function login(formData: FormData) {
 
   if (!validPassword) {
     throw new Error("Mot de passe incorrect");
+  }
+
+  await createSession({
+    userId: user.id,
+    email: user.email,
+    role: user.role,
+  });
+
+  if (user.role === "ADMIN") {
+    redirect("/admin/students");
   }
 
   redirect("/");
