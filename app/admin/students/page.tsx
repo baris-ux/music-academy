@@ -97,6 +97,61 @@ async function deleteStudent(formData: FormData) {
   revalidatePath("/admin/students");
 }
 
+
+async function updateStudent(formData: FormData) {
+  "use server";
+
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const id = String(formData.get("id") ?? "");
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim();
+
+  if (!id || !firstName || !lastName || !email) {
+    throw new Error("Champs obligatoires manquants");
+  }
+
+  const student = await prisma.student.findUnique({
+    where: { id },
+    include: { user: true },
+  });
+
+  if (!student) {
+    throw new Error("Étudiant introuvable");
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingUser && existingUser.id !== student.user.id) {
+    throw new Error("Email déjà utilisé");
+  }
+
+  await prisma.$transaction([
+    prisma.student.update({
+      where: { id },
+      data: {
+        firstName,
+        lastName,
+      },
+    }),
+    prisma.user.update({
+      where: { id: student.user.id },
+      data: {
+        email,
+      },
+    }),
+  ]);
+
+  revalidatePath("/admin/students");
+}
+
 export default async function StudentsPage() {
   const session = await getSession();
 
@@ -194,30 +249,75 @@ export default async function StudentsPage() {
         </button>
       </form>
 
-      <div className="space-y-3">
-        {students.map((student) => (
-          <div
-            key={student.id}
-            className="flex items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
-          >
-            <div>
-              <p className="text-base font-semibold text-slate-950">
-                {student.firstName} {student.lastName}
-              </p>
-              <p className="text-sm text-slate-700">{student.user.email}</p>
-            </div>
+      <div className="space-y-4">
+        {students.length === 0 ? (
+          <p className="text-sm text-slate-700">Aucun étudiant pour le moment.</p>
+        ) : (
+          students.map((student) => (
+            <div
+              key={student.id}
+              className="space-y-4 rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-base font-semibold text-slate-950">
+                    {student.firstName} {student.lastName}
+                  </p>
+                  <p className="text-sm text-slate-700">{student.user.email}</p>
+                </div>
 
-            <form action={deleteStudent}>
-              <input type="hidden" name="id" value={student.id} />
-              <button
-                type="submit"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                <form action={deleteStudent}>
+                  <input type="hidden" name="id" value={student.id} />
+                  <button
+                    type="submit"
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                  >
+                    Supprimer
+                  </button>
+                </form>
+              </div>
+
+              <form
+                action={updateStudent}
+                className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-2"
               >
-                Supprimer
-              </button>
-            </form>
-          </div>
-        ))}
+                <input type="hidden" name="id" value={student.id} />
+
+                <input
+                  name="firstName"
+                  defaultValue={student.firstName}
+                  placeholder="Prénom"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="lastName"
+                  defaultValue={student.lastName}
+                  placeholder="Nom"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="email"
+                  type="email"
+                  defaultValue={student.user.email}
+                  placeholder="Adresse e-mail"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300 md:col-span-2"
+                  required
+                />
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 md:col-span-2"
+                >
+                  Enregistrer les modifications
+                </button>
+              </form>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

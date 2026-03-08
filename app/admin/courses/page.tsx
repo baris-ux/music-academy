@@ -177,7 +177,7 @@ export default async function CoursesPage() {
 
         <button
           type="submit"
-          className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+          className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 cursor-pointer"
         >
           Créer le cours
         </button>
@@ -237,7 +237,7 @@ export default async function CoursesPage() {
 
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 cursor-pointer"
                 >
                   Enregistrer
                 </button>
