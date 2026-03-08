@@ -54,3 +54,14 @@ model Enrollment {
   @@unique([studentId, courseId])
 }
 
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  location    String
+  startAt     DateTime
+  endAt       DateTime?
+  price       Int
+  capacity    Int
+  createdAt   DateTime @default(now())
+}

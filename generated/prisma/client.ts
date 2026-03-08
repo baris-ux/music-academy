@@ -61,3 +61,8 @@ export type Course = Prisma.CourseModel
  * 
  */
 export type Enrollment = Prisma.EnrollmentModel
+/**
+ * Model Event
+ * 
+ */
+export type Event = Prisma.EventModel

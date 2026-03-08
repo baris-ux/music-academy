@@ -5,6 +5,7 @@ const navItems = [
   { href: "/admin/students", label: "Étudiants" },
   { href: "/admin/courses", label: "Cours" },
   { href: "/admin/enrollments", label: "Inscriptions" },
+  { href: "/admin/events", label: "Evenements" },
 ];
 
 export default function AdminLayout({
