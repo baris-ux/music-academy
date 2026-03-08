@@ -109,67 +109,116 @@ export default async function StudentsPage() {
   });
 
   return (
-    <main className="p-8 space-y-6">
-      <h1 className="text-2xl font-bold">Étudiants</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-950">Étudiants</h1>
+        <p className="mt-1 text-sm text-slate-700">
+          Ajoutez et gérez les comptes étudiants de l’académie.
+        </p>
+      </div>
 
-      <form action={createStudent} className="space-y-3 max-w-md border p-4 rounded">
-        <input
-          name="firstName"
-          placeholder="Prénom"
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
+      <form
+        action={createStudent}
+        className="max-w-xl space-y-5 rounded-2xl border border-slate-300 bg-slate-50 p-6 shadow-sm"
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <label
+              htmlFor="firstName"
+              className="text-sm font-medium text-slate-900"
+            >
+              Prénom
+            </label>
+            <input
+              id="firstName"
+              name="firstName"
+              placeholder="Ex. Jean"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+              required
+            />
+          </div>
 
-        <input
-          name="lastName"
-          placeholder="Nom"
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
+          <div className="space-y-1.5">
+            <label
+              htmlFor="lastName"
+              className="text-sm font-medium text-slate-900"
+            >
+              Nom
+            </label>
+            <input
+              id="lastName"
+              name="lastName"
+              placeholder="Ex. Dupont"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+              required
+            />
+          </div>
+        </div>
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
+        <div className="space-y-1.5">
+          <label htmlFor="email" className="text-sm font-medium text-slate-900">
+            Adresse e-mail
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="jean.dupont@email.com"
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+            required
+          />
+        </div>
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Mot de passe"
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
+        <div className="space-y-1.5">
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-slate-900"
+          >
+            Mot de passe provisoire
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Choisir un mot de passe"
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+            required
+          />
+        </div>
 
-        <button type="submit" className="border px-4 py-2 rounded">
-          Créer étudiant
+        <button
+          type="submit"
+          className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+        >
+          Créer l’étudiant
         </button>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {students.map((student) => (
           <div
             key={student.id}
-            className="border p-3 rounded flex justify-between items-center"
+            className="flex items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
           >
             <div>
-              <strong>
+              <p className="text-base font-semibold text-slate-950">
                 {student.firstName} {student.lastName}
-              </strong>
-              <div className="text-sm">{student.user.email}</div>
+              </p>
+              <p className="text-sm text-slate-700">{student.user.email}</p>
             </div>
 
             <form action={deleteStudent}>
               <input type="hidden" name="id" value={student.id} />
-              <button type="submit" className="text-red-600 text-sm">
+              <button
+                type="submit"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+              >
                 Supprimer
               </button>
             </form>
           </div>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

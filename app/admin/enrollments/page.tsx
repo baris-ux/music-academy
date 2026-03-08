@@ -147,17 +147,6 @@ export default async function EnrollmentsPage() {
           <p>Aucune inscription pour le moment.</p>
         ) : (
           enrollments.map((enrollment) => (
-            /**<div key={enrollment.id} className="border p-3 rounded">
-              <strong>
-                {enrollment.student.firstName} {enrollment.student.lastName}
-              </strong>
-              <div className="text-sm text-gray-600">
-                {enrollment.student.user.email}
-              </div>
-              <div className="text-sm">
-                Cours : {enrollment.course.title}
-              </div>
-            </div>**/
             <div key={enrollment.id} className="border p-3 rounded flex justify-between items-center">
               <div>
                 <strong>
