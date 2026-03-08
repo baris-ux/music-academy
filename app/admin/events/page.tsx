@@ -3,6 +3,17 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 
+function formatDateTimeLocal(date: Date | string) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 async function createEvent(formData: FormData) {
   "use server";
 
@@ -13,6 +24,7 @@ async function createEvent(formData: FormData) {
   }
 
   const title = String(formData.get("title") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
   const location = String(formData.get("location") ?? "").trim();
   const startAtRaw = String(formData.get("startAt") ?? "").trim();
   const price = Number(formData.get("price") ?? 0);
@@ -31,6 +43,7 @@ async function createEvent(formData: FormData) {
   await prisma.event.create({
     data: {
       title,
+      description,
       location,
       startAt,
       price,
@@ -62,6 +75,58 @@ async function deleteEvent(formData: FormData) {
 
   revalidatePath("/admin/events");
 }
+
+
+async function updateEvent(formData: FormData) {
+  "use server";
+
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const id = String(formData.get("id") ?? "");
+  const description = String(formData.get("description") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const location = String(formData.get("location") ?? "").trim();
+  const startAtRaw = String(formData.get("startAt") ?? "").trim();
+  const price = Number(formData.get("price") ?? 0);
+  const capacity = Number(formData.get("capacity") ?? 0);
+
+  if (!id || !title || !location || !startAtRaw || price < 0 || capacity <= 0) {
+    throw new Error("Données invalides pour la modification de l’événement.");
+  }
+
+  const startAt = new Date(startAtRaw);
+
+  if (Number.isNaN(startAt.getTime())) {
+    throw new Error("Date de début invalide.");
+  }
+
+  const existingEvent = await prisma.event.findUnique({
+    where: { id },
+  });
+
+  if (!existingEvent) {
+    throw new Error("Événement introuvable.");
+  }
+
+  await prisma.event.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      location,
+      startAt,
+      price,
+      capacity,
+    },
+  });
+
+  revalidatePath("/admin/events");
+}
+
 
 export default async function EventsPage() {
   const session = await getSession();
@@ -96,6 +161,18 @@ export default async function EventsPage() {
             placeholder="Ex. Concert de fin d’année"
             className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
             required
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label htmlFor="description" className="text-sm font-medium text-slate-900">
+            Déscription de l'évènement
+          </label>
+          <input
+            id="description"
+            name="description"
+            placeholder="Ex. présentation des progrès réalisé par nos étudiants pendant 4 mois"
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 placeholder:text-slate-600 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
           />
         </div>
 
@@ -171,13 +248,13 @@ export default async function EventsPage() {
 
         <button
           type="submit"
-          className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+          className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 cursor-pointer"
         >
           Créer l’événement
         </button>
       </form>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {events.length === 0 ? (
           <p className="text-sm text-slate-700">
             Aucun événement pour le moment.
@@ -186,33 +263,106 @@ export default async function EventsPage() {
           events.map((event) => (
             <div
               key={event.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
+              className="space-y-4 rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
             >
-              <div>
-                <p className="text-base font-semibold text-slate-950">
-                  {event.title}
-                </p>
-                <p className="text-sm text-slate-700">{event.location}</p>
-                <p className="text-sm text-slate-700">
-                  Début :{" "}
-                  {new Date(event.startAt).toLocaleString("fr-BE", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
-                </p>
-                <p className="text-sm text-slate-700">
-                  Prix : {(event.price / 100).toFixed(2)} € • Capacité :{" "}
-                  {event.capacity}
-                </p>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-base font-semibold text-slate-950">
+                    {event.title}
+                  </p>
+
+                  {event.description && (
+                    <p className="text-sm text-slate-700 mt-1">
+                      {event.description}
+                    </p>
+                  )}
+
+                  <p className="text-sm text-slate-700">{event.location}</p>
+
+                  <p className="text-sm text-slate-700">
+                    Début :{" "}
+                    {new Date(event.startAt).toLocaleString("fr-BE", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                  <p className="text-sm text-slate-700">
+                    Prix : {(event.price / 100).toFixed(2)} € • Capacité :{" "}
+                    {event.capacity}
+                  </p>
+                </div>
+
+                <form action={deleteEvent}>
+                  <input type="hidden" name="id" value={event.id} />
+                  <button
+                    type="submit"
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                  >
+                    Supprimer
+                  </button>
+                </form>
               </div>
 
-              <form action={deleteEvent}>
+              <form
+                action={updateEvent}
+                className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-2"
+              >
                 <input type="hidden" name="id" value={event.id} />
+
+                <input
+                  name="title"
+                  defaultValue={event.title}
+                  placeholder="Titre"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="description"
+                  defaultValue={event.description ?? ""}
+                  placeholder="description"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                />
+
+                <input
+                  name="location"
+                  defaultValue={event.location}
+                  placeholder="Lieu"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="startAt"
+                  type="datetime-local"
+                  defaultValue={formatDateTimeLocal(event.startAt)}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="price"
+                  type="number"
+                  min={0}
+                  defaultValue={event.price}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="capacity"
+                  type="number"
+                  min={1}
+                  defaultValue={event.capacity}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
                 <button
                   type="submit"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 md:col-span-2 cursor-pointer"
                 >
-                  Supprimer
+                  Enregistrer les modifications
                 </button>
               </form>
             </div>
