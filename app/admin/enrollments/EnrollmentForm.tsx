@@ -40,53 +40,70 @@ export default function EnrollmentForm({
   });
 
   return (
-    <form action={formAction} className="space-y-3 max-w-md border p-4 rounded">
-      <select
-        name="studentId"
-        className="w-full border px-3 py-2 rounded"
-        required
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Choisir un étudiant
-        </option>
-        {students.map((student) => (
-          <option key={student.id} value={student.id}>
-            {student.firstName} {student.lastName} - {student.user.email}
+    <form
+      action={formAction}
+      className="max-w-xl space-y-5 rounded-2xl border border-slate-300 bg-slate-50 p-6 shadow-sm"
+    >
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-slate-900">
+          Étudiant
+        </label>
+        <select
+          name="studentId"
+          required
+          defaultValue=""
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+        >
+          <option value="" disabled>
+            Choisir un étudiant
           </option>
-        ))}
-      </select>
+          {students.map((student) => (
+            <option key={student.id} value={student.id}>
+              {student.firstName} {student.lastName} - {student.user.email}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        name="courseId"
-        className="w-full border px-3 py-2 rounded"
-        required
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Choisir un cours
-        </option>
-        {courses.map((course) => (
-          <option key={course.id} value={course.id}>
-            {course.title} (capacité : {course.capacity})
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-slate-900">
+          Cours
+        </label>
+        <select
+          name="courseId"
+          required
+          defaultValue=""
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+        >
+          <option value="" disabled>
+            Choisir un cours
           </option>
-        ))}
-      </select>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title} (capacité : {course.capacity})
+            </option>
+          ))}
+        </select>
+      </div>
 
       {state.error && (
-        <p className="text-sm text-red-600">{state.error}</p>
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {state.error}
+        </div>
       )}
 
       {state.success && (
-        <p className="text-sm text-green-600">{state.success}</p>
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          {state.success}
+        </div>
       )}
 
       <button
         type="submit"
-        className="border px-4 py-2 rounded"
         disabled={pending}
+        className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {pending ? "Envoi..." : "Créer inscription"}
+        {pending ? "Envoi..." : "Créer l’inscription"}
       </button>
     </form>
   );

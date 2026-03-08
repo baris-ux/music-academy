@@ -133,8 +133,15 @@ export default async function EnrollmentsPage() {
   });
 
   return (
-    <main className="p-8 space-y-6">
-      <h1 className="text-2xl font-bold">Inscriptions</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-950">
+          Inscriptions
+        </h1>
+        <p className="mt-1 text-sm text-slate-700">
+          Gérez les associations entre étudiants et cours.
+        </p>
+      </div>
 
       <EnrollmentForm
         students={students}
@@ -142,29 +149,44 @@ export default async function EnrollmentsPage() {
         createEnrollment={createEnrollment}
       />
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {enrollments.length === 0 ? (
-          <p>Aucune inscription pour le moment.</p>
+          <p className="text-sm text-slate-700">
+            Aucune inscription pour le moment.
+          </p>
         ) : (
           enrollments.map((enrollment) => (
-            <div key={enrollment.id} className="border p-3 rounded flex justify-between items-center">
+            <div
+              key={enrollment.id}
+              className="flex items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
+            >
               <div>
-                <strong>
-                  {enrollment.student.firstName} {enrollment.student.lastName}
-                </strong>
-                <div className="text-sm text-gray-600">
+                <p className="text-base font-semibold text-slate-950">
+                  {enrollment.student.firstName}{" "}
+                  {enrollment.student.lastName}
+                </p>
+
+                <p className="text-sm text-slate-700">
                   {enrollment.student.user.email}
-                </div>
-                <div className="text-sm">
-                  Cours : {enrollment.course.title}
-                </div>
+                </p>
+
+                <p className="mt-1 text-sm text-slate-800">
+                  Cours :{" "}
+                  <span className="font-medium">
+                    {enrollment.course.title}
+                  </span>
+                </p>
               </div>
 
               <form action={deleteEnrollment}>
-                <input type="hidden" name="id" value={enrollment.id} />
+                <input
+                  type="hidden"
+                  name="id"
+                  value={enrollment.id}
+                />
                 <button
                   type="submit"
-                  className="text-red-600 text-sm"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
                 >
                   Supprimer
                 </button>
@@ -173,6 +195,6 @@ export default async function EnrollmentsPage() {
           ))
         )}
       </div>
-    </main>
+    </div>
   );
 }
