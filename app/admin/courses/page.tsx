@@ -29,6 +29,55 @@ async function createCourse(formData: FormData) {
   revalidatePath("/admin/courses");
 }
 
+async function updateCourse(formData: FormData) {
+  "use server";
+
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const id = String(formData.get("id") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const capacity = Number(formData.get("capacity") ?? 0);
+
+  if (!id || !title || capacity <= 0) {
+    throw new Error("Données invalides pour la modification du cours.");
+  }
+
+  const course = await prisma.course.findUnique({
+    where: { id },
+    include: {
+      _count: {
+        select: {
+          enrollments: true,
+        },
+      },
+    },
+  });
+
+  if (!course) {
+    throw new Error("Cours introuvable.");
+  }
+
+  if (capacity < course._count.enrollments) {
+    throw new Error(
+      "La capacité ne peut pas être inférieure au nombre d'inscrits."
+    );
+  }
+
+  await prisma.course.update({
+    where: { id },
+    data: {
+      title,
+      capacity,
+    },
+  });
+
+  revalidatePath("/admin/courses");
+}
+
 async function deleteCourse(formData: FormData) {
   "use server";
 
@@ -72,6 +121,13 @@ export default async function CoursesPage() {
   if (session.role !== "ADMIN") redirect("/");
 
   const courses = await prisma.course.findMany({
+    include: {
+      _count: {
+        select: {
+          enrollments: true,
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -127,31 +183,63 @@ export default async function CoursesPage() {
         </button>
       </form>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {courses.length === 0 ? (
           <p className="text-sm text-slate-700">Aucun cours pour le moment.</p>
         ) : (
           courses.map((course) => (
             <div
               key={course.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
+              className="space-y-4 rounded-2xl border border-slate-300 bg-white px-4 py-4 shadow-sm"
             >
-              <div>
-                <p className="text-base font-semibold text-slate-950">
-                  {course.title}
-                </p>
-                <p className="text-sm text-slate-700">
-                  Capacité : {course.capacity}
-                </p>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-base font-semibold text-slate-950">
+                    {course.title}
+                  </p>
+                  <p className="text-sm text-slate-700">
+                    Inscrits : {course._count.enrollments} / {course.capacity}
+                  </p>
+                </div>
+
+                <form action={deleteCourse}>
+                  <input type="hidden" name="id" value={course.id} />
+                  <button
+                    type="submit"
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                  >
+                    Supprimer
+                  </button>
+                </form>
               </div>
 
-              <form action={deleteCourse}>
+              <form
+                action={updateCourse}
+                className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-[1fr_140px_auto]"
+              >
                 <input type="hidden" name="id" value={course.id} />
+
+                <input
+                  name="title"
+                  defaultValue={course.title}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
+                <input
+                  name="capacity"
+                  type="number"
+                  min={course._count.enrollments || 1}
+                  defaultValue={course.capacity}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                  required
+                />
+
                 <button
                   type="submit"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
                 >
-                  Supprimer
+                  Enregistrer
                 </button>
               </form>
             </div>
