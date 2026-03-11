@@ -30,12 +30,12 @@ async function createStudent(formData: FormData) {
     throw new Error("Email déjà utilisé");
   }
 
-  const passwordHash = await argon2.hash(password);
+  const passwordHash = await argon2.hash(password); // hashage et salage du mot de passe
 
   await prisma.user.create({
     data: {
       email,
-      passwordHash,
+      passwordHash, // on enregistre le passwordHash et non password
       role: "STUDENT",
       student: {
         create: {

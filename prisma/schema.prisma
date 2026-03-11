@@ -64,4 +64,18 @@ model Event {
   price       Int
   capacity    Int
   createdAt   DateTime @default(now())
+  tickets     Ticket[]
+}
+
+
+model Ticket {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  buyerName  String
+  buyerEmail String
+  quantity   Int      @default(1)
+  eventId    String
+  createdAt  DateTime @default(now())
+
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
