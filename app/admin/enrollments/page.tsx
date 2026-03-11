@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import EnrollmentForm from "./EnrollmentForm";
+import DeleteEnrollmentButton from "./deleteEnrollmentButton";
 
 type FormState = {
   error: string | null;
@@ -177,20 +178,10 @@ export default async function EnrollmentsPage() {
                   </span>
                 </p>
               </div>
-
-              <form action={deleteEnrollment}>
-                <input
-                  type="hidden"
-                  name="id"
-                  value={enrollment.id}
-                />
-                <button
-                  type="submit"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
-                >
-                  Supprimer
-                </button>
-              </form>
+              <DeleteEnrollmentButton
+                enrollmentId={enrollment.id}
+                action={deleteEnrollment}
+              />
             </div>
           ))
         )}
