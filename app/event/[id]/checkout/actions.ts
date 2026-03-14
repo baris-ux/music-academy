@@ -68,7 +68,7 @@ export async function createOrder(
             product_data: {
               name: event.title,
             },
-            unit_amount: event.price * 100,
+            unit_amount: event.price
           },
           quantity,
         },
