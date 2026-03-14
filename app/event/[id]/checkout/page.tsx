@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { createOrder } from "./actions";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -54,7 +55,7 @@ export default async function EventCheckoutPage({ params }: Props) {
           </p>
         </div>
 
-        <form className="mt-6 space-y-4">
+        <form action={createOrder.bind(null, event.id)} className="mt-6 space-y-4">
           <div>
             <label
               htmlFor="email"

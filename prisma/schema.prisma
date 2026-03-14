@@ -65,17 +65,29 @@ model Event {
   capacity    Int
   createdAt   DateTime @default(now())
   tickets     Ticket[]
+  order       Order[]
 }
 
 
-model Ticket {
-  id         Int      @id @default(autoincrement())
-  code       String   @unique
-  buyerName  String
-  buyerEmail String
-  quantity   Int      @default(1)
-  eventId    String
-  createdAt  DateTime @default(now())
+model Order {
+  id              String   @id @default(uuid())
+  email           String
+  amount          Int
+  status          String
+  stripeSessionId String?  @unique
+  eventId         String
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tickets         Ticket[]
+  createdAt       DateTime @default(now())
+}
 
-  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+model Ticket {
+  id        String   @id @default(uuid())
+  qrCode    String   @unique
+  usedAt    DateTime?
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

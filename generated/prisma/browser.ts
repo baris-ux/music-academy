@@ -42,3 +42,13 @@ export type Enrollment = Prisma.EnrollmentModel
  * 
  */
 export type Event = Prisma.EventModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model Ticket
+ * 
+ */
+export type Ticket = Prisma.TicketModel

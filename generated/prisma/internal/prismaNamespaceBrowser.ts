@@ -55,7 +55,9 @@ export const ModelName = {
   Student: 'Student',
   Course: 'Course',
   Enrollment: 'Enrollment',
-  Event: 'Event'
+  Event: 'Event',
+  Order: 'Order',
+  Ticket: 'Ticket'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -129,6 +131,31 @@ export const EventScalarFieldEnum = {
 } as const
 
 export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  amount: 'amount',
+  status: 'status',
+  stripeSessionId: 'stripeSessionId',
+  eventId: 'eventId',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const TicketScalarFieldEnum = {
+  id: 'id',
+  qrCode: 'qrCode',
+  usedAt: 'usedAt',
+  orderId: 'orderId',
+  eventId: 'eventId',
+  createdAt: 'createdAt'
+} as const
+
+export type TicketScalarFieldEnum = (typeof TicketScalarFieldEnum)[keyof typeof TicketScalarFieldEnum]
 
 
 export const SortOrder = {
