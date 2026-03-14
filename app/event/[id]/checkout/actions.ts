@@ -14,7 +14,7 @@ export async function createOrder(eventId: string, formData: FormData) {
     throw new Error("Adresse e-mail invalide.");
   }
 
-  if (!Number.isInteger(quantity) || quantity < 1) {
+  if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
     throw new Error("Quantité invalide.");
   }
 
