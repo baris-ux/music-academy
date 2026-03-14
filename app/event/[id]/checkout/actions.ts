@@ -1,9 +1,17 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
-export async function createOrder(eventId: string, formData: FormData) {
+export type CheckoutState = {
+  error?: string;
+};
+
+export async function createOrder(
+  eventId: string,
+  _prevState: CheckoutState,
+  formData: FormData
+): Promise<CheckoutState> {
   const emailValue = formData.get("email");
   const quantityValue = formData.get("quantity");
 
@@ -11,11 +19,11 @@ export async function createOrder(eventId: string, formData: FormData) {
   const quantity = Number(quantityValue);
 
   if (!email || !email.includes("@")) {
-    throw new Error("Adresse e-mail invalide.");
+    return { error: "Veuillez entrer une adresse e-mail valide." };
   }
 
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
-    throw new Error("Quantité invalide.");
+    return { error: "La quantité doit être comprise entre 1 et 10." };
   }
 
   const event = await prisma.event.findUnique({
@@ -23,24 +31,34 @@ export async function createOrder(eventId: string, formData: FormData) {
     select: {
       id: true,
       price: true,
-      title: true,
     },
   });
 
   if (!event) {
-    throw new Error("Événement introuvable.");
+    return { error: "Cet événement est introuvable." };
   }
 
   const amount = event.price * quantity;
 
-  const order = await prisma.order.create({
-    data: {
-      email,
-      amount,
-      status: "PENDING",
-      eventId: event.id,
-    },
-  });
+  let order;
+
+  try {
+    order = await prisma.order.create({
+      data: {
+        email,
+        amount,
+        status: "PENDING",
+        eventId: event.id,
+      },
+    });
+  } catch (error) {
+    console.error("Erreur createOrder:", error);
+
+    return {
+      error:
+        "Une erreur est survenue pendant la création de la commande. Veuillez réessayer.",
+    };
+  }
 
   redirect(`/event/${event.id}/checkout/success?orderId=${order.id}`);
 }
