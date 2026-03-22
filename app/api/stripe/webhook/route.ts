@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@/lib/prisma";
 import { randomUUID  } from "crypto";
+import { resend } from "@/lib/email";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-04-10",
@@ -69,6 +70,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ received: true }, { status: 200 });
       }
 
+      let createdTicket = null;
+
       await prisma.$transaction(async (tx) => {
         if (order.status !== "PAID") {
           await tx.order.update({
@@ -80,7 +83,7 @@ export async function POST(req: Request) {
         }
 
         if (order.tickets.length === 0) {
-          await tx.ticket.create({
+          createdTicket = await tx.ticket.create({
             data: {
               qrCode: randomUUID(),
               orderId: order.id,
@@ -89,6 +92,20 @@ export async function POST(req: Request) {
           });
         }
       });
+
+      if (createdTicket) {
+        await resend.emails.send({
+          from: "onboarding@resend.dev",
+          to: order.email,
+          subject: "Votre billet 🎟️",
+          html: `
+            <h1>Merci pour votre achat</h1>
+            <p>Votre paiement a bien été confirmé.</p>
+            <p>Voici votre billet :</p>
+            <p><strong>${createdTicket.qrCode}</strong></p>
+          `,
+        });
+      }
 
       console.log(`Commande ${orderId} marquée comme PAID et ticket créé.`);
     }
