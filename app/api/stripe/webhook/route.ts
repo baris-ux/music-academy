@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { prisma } from "@/lib/prisma";
 import { randomUUID  } from "crypto";
 import { resend } from "@/lib/email";
+import { generateTicketPdf } from "@/lib/ticket-pdf";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-04-10",
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
         where: { id: orderId },
         include: {
           tickets: true,
+          event : true
         },
       });
 
@@ -94,6 +96,13 @@ export async function POST(req: Request) {
       });
 
       if (createdTicket) {
+
+        const pdfBytes = await generateTicketPdf({
+          qrCode: createdTicket.qrCode,
+          eventTitle: order.event.title,
+          buyerEmail: order.email,
+        });
+
         await resend.emails.send({
           from: "onboarding@resend.dev",
           to: order.email,
@@ -102,8 +111,14 @@ export async function POST(req: Request) {
             <h1>Merci pour votre achat</h1>
             <p>Votre paiement a bien été confirmé.</p>
             <p>Voici votre billet :</p>
-            <p><strong>${createdTicket.qrCode}</strong></p>
+            <p>Votre billet est en pièce jointe (PDF).</p>
           `,
+          attachments: [
+            {
+              filename: "ticket.pdf",
+              content: Buffer.from(pdfBytes).toString("base64")
+            },
+          ],
         });
       }
 
