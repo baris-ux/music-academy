@@ -102,6 +102,10 @@ export async function POST(req: Request) {
           buyerEmail: order.email,
         });
 
+        if (!resend) {
+          throw new Error("RESEND_API_KEY manquante.");
+        }
+
         await resend.emails.send({
           from: "onboarding@resend.dev",
           to: order.email,
