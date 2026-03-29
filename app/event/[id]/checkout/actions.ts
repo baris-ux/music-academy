@@ -73,8 +73,10 @@ export async function createOrder(
           quantity,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/event/${event.id}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/event/${event.id}/checkout`,
+
+      success_url: `${process.env.APP_URL}/event/${event.id}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.APP_URL}/event/${event.id}/checkout`,
+      
       metadata: {
         orderId: order.id,
       },
