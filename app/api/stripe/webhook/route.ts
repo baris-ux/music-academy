@@ -6,7 +6,7 @@ import { resend } from "@/lib/email";
 import { generateTicketPdf } from "@/lib/ticket-pdf";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-04-10",
+  apiVersion: "2026-02-25.clover",
 });
 
 export async function POST(req: Request) {
@@ -72,9 +72,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ received: true }, { status: 200 });
       }
 
-      let createdTicket = null;
-
-      await prisma.$transaction(async (tx) => {
+      const createdTicket = await prisma.$transaction(async (tx) => {
         if (order.status !== "PAID") {
           await tx.order.update({
             where: { id: orderId },
@@ -85,7 +83,7 @@ export async function POST(req: Request) {
         }
 
         if (order.tickets.length === 0) {
-          createdTicket = await tx.ticket.create({
+          return tx.ticket.create({
             data: {
               qrCode: randomUUID(),
               orderId: order.id,
@@ -93,10 +91,11 @@ export async function POST(req: Request) {
             },
           });
         }
+
+        return null;
       });
 
       if (createdTicket) {
-
         const pdfBytes = await generateTicketPdf({
           qrCode: createdTicket.qrCode,
           eventTitle: order.event.title,
@@ -116,7 +115,7 @@ export async function POST(req: Request) {
           attachments: [
             {
               filename: "ticket.pdf",
-              content: Buffer.from(pdfBytes).toString("base64")
+              content: Buffer.from(pdfBytes).toString("base64"),
             },
           ],
         });

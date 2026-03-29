@@ -181,6 +181,8 @@ export default async function EnrollmentsPage() {
               <DeleteEnrollmentButton
                 enrollmentId={enrollment.id}
                 action={deleteEnrollment}
+                studentName={`${enrollment.student.firstName} ${enrollment.student.lastName}`}
+                courseTitle={enrollment.course.title}
               />
             </div>
           ))
