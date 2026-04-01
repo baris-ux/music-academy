@@ -67,7 +67,7 @@ STRIPE_WEBHOOK_SECRET=""
 RESEND_API_KEY=""
 
 # ======================
-# APP URL
+# APP URL=""
 # ======================
 
 APP_URL=""
