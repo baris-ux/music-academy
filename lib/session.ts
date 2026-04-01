@@ -8,6 +8,11 @@ type SessionUser = {
 
 const SESSION_COOKIE = "session";
 
+function getCookieDomain() {
+  if (process.env.NODE_ENV !== "production") return undefined;
+  return "music-academy-three.vercel.app";
+}
+
 export async function createSession(user: SessionUser) {
   const cookieStore = await cookies();
 
@@ -17,6 +22,7 @@ export async function createSession(user: SessionUser) {
     secure: process.env.NODE_ENV === "production",
     path: "/",
     maxAge: 60 * 60 * 24,
+    domain: getCookieDomain(),
   });
 }
 
@@ -35,5 +41,10 @@ export async function getSession(): Promise<SessionUser | null> {
 
 export async function clearSession() {
   const cookieStore = await cookies();
-  cookieStore.delete(SESSION_COOKIE);
+
+  cookieStore.delete({
+    name: SESSION_COOKIE,
+    path: "/",
+    domain: getCookieDomain(),
+  });
 }
