@@ -19,8 +19,21 @@ async function createEvent(formData: FormData) {
 
   const session = await getSession();
 
-  if (!session || session.role !== "ADMIN") {
+  /*
+  if (!session)
+    || session.role !== "ADMIN") {
     redirect("/login");
+  }
+  */
+
+  console.log("SESSION createEvent =", session);
+
+  if (!session) {
+    throw new Error("Session introuvable dans createEvent");
+  }
+
+  if (session.role !== "ADMIN") {
+    throw new Error("Utilisateur non admin");
   }
 
   const title = String(formData.get("title") ?? "").trim();
