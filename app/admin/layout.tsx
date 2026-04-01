@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/session";
 
 const navItems = [
   { href: "/admin", label: "Accueil" },
@@ -8,11 +10,21 @@ const navItems = [
   { href: "/admin/events", label: "Evenements" },
 ];
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  if (session.role !== "ADMIN") {
+    redirect("/");
+  }
+
   return (
     <div className="min-h-screen bg-slate-200">
       <div className="mx-auto flex min-h-screen max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
