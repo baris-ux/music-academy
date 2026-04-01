@@ -129,11 +129,11 @@ async function updateEvent(formData: FormData) {
 
 
 export default async function EventsPage() {
-  const session = await getSession();
+  /*const session = await getSession();
 
   if (!session) redirect("/login");
   if (session.role !== "ADMIN") redirect("/");
-
+  */
   const events = await prisma.event.findMany({
     orderBy: { startAt: "asc" },
   });
