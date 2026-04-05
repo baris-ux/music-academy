@@ -7,7 +7,7 @@ const navItems = [
   { href: "/admin/students", label: "Étudiants" },
   { href: "/admin/courses", label: "Cours" },
   { href: "/admin/enrollments", label: "Inscriptions" },
-  { href: "/admin/events", label: "Evenements" },
+  { href: "/admin/events", label: "Événements" },
 ];
 
 export default async function AdminLayout({
@@ -33,9 +33,7 @@ export default async function AdminLayout({
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
               Music Academy
             </p>
-            <h1 className="mt-2 text-2xl font-bold text-slate-950">
-              Admin
-            </h1>
+            <h1 className="mt-2 text-2xl font-bold text-slate-950">Admin</h1>
             <p className="mt-2 text-sm leading-6 text-slate-600">
               Gérez l’académie depuis une interface claire et centralisée.
             </p>
@@ -56,7 +54,8 @@ export default async function AdminLayout({
           <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-100 p-4">
             <p className="text-sm font-semibold text-slate-900">Conseil</p>
             <p className="mt-1 text-sm leading-6 text-slate-700">
-              Vérifie toujours les inscriptions avant de supprimer un étudiant ou un cours.
+              Vérifie toujours les inscriptions avant de supprimer un étudiant ou
+              un cours.
             </p>
           </div>
         </aside>
