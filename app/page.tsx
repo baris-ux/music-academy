@@ -52,6 +52,9 @@ export default async function HomePage() {
             <Link href="/" className="transition hover:text-slate-900">
               Accueil
             </Link>
+            <Link href="/contact" className="transition hover:text-slate-900">
+              Contact
+            </Link>
             <Link href="/event" className="transition hover:text-slate-900">
               Événements
             </Link>
@@ -301,6 +304,33 @@ export default async function HomePage() {
                 Connexion
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-20">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-slate-900 px-8 py-12 text-white shadow-lg">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight">
+                Besoin d’informations ?
+              </h2>
+              <p className="mt-3 text-slate-300">
+                Consultez nos lieux de cours, nos horaires ou contactez-nous
+                directement.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/contact"
+                className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+              >
+                Nous contacter
+              </Link>
+            </div>
+
           </div>
         </div>
       </section>
