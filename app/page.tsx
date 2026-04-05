@@ -1,31 +1,6 @@
 import Link from "next/link";
-
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "Concert des élèves",
-    date: "Samedi 20 avril 2026",
-    location: "Auditorium de l’académie",
-    description:
-      "Une soirée musicale mettant en avant le travail des élèves de l’académie.",
-  },
-  {
-    id: 2,
-    title: "Masterclass piano",
-    date: "Jeudi 25 avril 2026",
-    location: "Salle 2",
-    description:
-      "Une session encadrée pour approfondir la technique et l’interprétation.",
-  },
-  {
-    id: 3,
-    title: "Atelier guitare moderne",
-    date: "Mardi 30 avril 2026",
-    location: "Studio pédagogique",
-    description:
-      "Un atelier pratique autour de l’accompagnement, du rythme et du son.",
-  },
-];
+import Image from "next/image";
+import { prisma } from "@/lib/prisma";
 
 const features = [
   {
@@ -52,7 +27,19 @@ const benefits = [
   "Académie moderne et centralisée",
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const upcomingEvents = await prisma.event.findMany({
+    where: {
+      startAt: {
+        gte: new Date(),
+      },
+    },
+    orderBy: {
+      startAt: "asc",
+    },
+    take: 3,
+  });
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <header className="border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -218,30 +205,46 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {upcomingEvents.map((event) => (
-              <div
-                key={event.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <p className="text-sm font-medium text-slate-500">
-                  {event.date}
-                </p>
-                <h3 className="mt-2 text-xl font-semibold text-slate-900">
-                  {event.title}
-                </h3>
-                <p className="mt-2 text-sm text-slate-500">{event.location}</p>
-                <p className="mt-4 text-sm leading-6 text-slate-600">
-                  {event.description}
-                </p>
-
-                <Link
-                  href="/event"
-                  className="mt-6 inline-flex rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
-                >
-                  Voir plus
-                </Link>
+            {upcomingEvents.length === 0 ? (
+              <div className="md:col-span-3 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">
+                Aucun événement prévu pour le moment.
               </div>
-            ))}
+            ) : (
+              upcomingEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                >
+
+                  <div className="p-6">
+                    <p className="text-sm text-slate-500">
+                      {new Date(event.startAt).toLocaleDateString("fr-BE", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+
+                    <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                      {event.title}
+                    </h3>
+
+                    <p className="text-sm text-slate-500">{event.location}</p>
+
+                    <p className="mt-4 text-sm text-slate-600">
+                      {event.description ?? "Aucune description disponible pour cet événement."}
+                    </p>
+
+                    <Link
+                      href={`/event/${event.id}`}
+                      className="mt-6 inline-flex rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                    >
+                      Voir plus
+                    </Link>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
