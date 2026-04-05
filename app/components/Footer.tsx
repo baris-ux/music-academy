@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin} from "lucide-react";
 
 export default function Footer() {
   return (
@@ -47,34 +47,10 @@ export default function Footer() {
           </h3>
 
           <div className="flex gap-4">
-            <Link
-              href="https://instagram.com"
-              target="_blank"
-              className="hover:text-white transition"
-            >
-              <Instagram />
-            </Link>
-
-            <Link
-              href="https://facebook.com"
-              target="_blank"
-              className="hover:text-white transition"
-            >
-              <Facebook />
-            </Link>
-
-            <Link
-              href="https://youtube.com"
-              target="_blank"
-              className="hover:text-white transition"
-            >
-              <Youtube />
-            </Link>
           </div>
         </div>
       </div>
 
-      {/* 🔻 Bottom bar */}
       <div className="border-t border-gray-800 text-center text-sm py-4">
         © {new Date().getFullYear()} Music Academy — Tous droits réservés
       </div>
