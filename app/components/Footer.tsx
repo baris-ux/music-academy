@@ -1,12 +1,11 @@
-import Link from "next/link";
-import { Mail, Phone, MapPin} from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-16">
+    <footer className="bg-gray-900">
       <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
 
-        {/* 🔹 Académie */}
+        {/* Académie */}
         <div>
           <h2 className="text-xl font-semibold text-white mb-4">
             Music Academy
@@ -16,7 +15,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* 🔹 Contact */}
+        {/* Contact */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">
             Contact
@@ -25,12 +24,16 @@ export default function Footer() {
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-2">
               <Mail size={16} />
-              <span>contact@musicacademy.com</span>
+              <a href="mailto:contact@musicacademy.com">
+                contact@musicacademy.com
+              </a>
             </div>
 
             <div className="flex items-center gap-2">
               <Phone size={16} />
-              <span>+32 123 45 67 89</span>
+              <a href="tel:+32123456789">
+                +32 123 45 67 89
+              </a>
             </div>
 
             <div className="flex items-center gap-2">
@@ -40,18 +43,18 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 🔹 Réseaux sociaux */}
+        {/* Réseaux sociaux (placeholder) */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">
             Suivez-nous
           </h3>
-
-          <div className="flex gap-4">
-          </div>
+          <p className="text-sm text-gray-400">
+            Bientôt disponible
+          </p>
         </div>
       </div>
 
-      <div className="border-t border-gray-800 text-center text-sm py-4">
+      <div className="text-center text-sm py-4 text-gray-400">
         © {new Date().getFullYear()} Music Academy — Tous droits réservés
       </div>
     </footer>
