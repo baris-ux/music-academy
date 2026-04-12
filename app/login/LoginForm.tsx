@@ -8,11 +8,14 @@ export default function LoginForm() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setPending(true);
     setError("");
 
     try {
+      const formData = new FormData(event.currentTarget);
+
       const response = await fetch("/api/login", {
         method: "POST",
         body: formData,
@@ -42,7 +45,7 @@ export default function LoginForm() {
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="email" className="block text-sm font-medium">
           Email
