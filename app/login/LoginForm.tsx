@@ -16,6 +16,7 @@ export default function LoginForm() {
       const response = await fetch("/api/login", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const result = await response.json();
