@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import argon2 from "argon2";
 import { prisma } from "@/lib/prisma";
 
-const SESSION_COOKIE = "session_v3";
-
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -42,21 +40,17 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    response.cookies.set(
-      SESSION_COOKIE,
-      JSON.stringify({
-        userId: user.id,
-        role: user.role,
-        email: user.email,
-      }),
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      }
-    );
+    response.cookies.set("session_v3", JSON.stringify({
+      userId: user.id,
+      role: user.role,
+      email: user.email,
+    }), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
 
     return response;
   } catch (error) {
