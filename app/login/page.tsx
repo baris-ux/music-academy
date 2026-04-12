@@ -27,6 +27,8 @@ async function login(formData: FormData) {
     throw new Error("Mot de passe incorrect");
   }
 
+  console.log("[login] user found =", user.email, user.role);
+
   await createSession({
     userId: user.id,
     email: user.email,

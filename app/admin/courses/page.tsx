@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 async function createCourse(formData: FormData) {
   "use server";
 

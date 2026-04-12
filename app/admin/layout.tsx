@@ -2,6 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 
+export const dynamic = "force-dynamic";
+
 const navItems = [
   { href: "/admin", label: "Accueil" },
   { href: "/admin/students", label: "Étudiants" },
