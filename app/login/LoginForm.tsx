@@ -1,26 +1,43 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { login } from "./actions";
+import { useState } from "react";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(formData: FormData) {
-    startTransition(async () => {
-      const result = await login(formData);
+    setPending(true);
+    setError("");
 
-      if (result?.success) {
-        if (result.role === "ADMIN") {
-          router.push("/admin/students");
-          return;
-        }
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        body: formData,
+      });
 
-        router.push("/");
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error ?? "Erreur de connexion");
+        return;
       }
-    });
+
+      if (result.role === "ADMIN") {
+        router.push("/admin/students");
+        router.refresh();
+        return;
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch {
+      setError("Une erreur est survenue.");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -52,6 +69,8 @@ export default function LoginForm() {
           required
         />
       </div>
+
+      {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
       <button
         type="submit"
