@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 
 const SESSION_COOKIE = "session_v3";
 
-export async function GET() {
-  const response = NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"));
+export async function GET(request: Request) {
+  const response = NextResponse.redirect(new URL("/login", request.url));
   response.cookies.delete(SESSION_COOKIE);
   return response;
 }
