@@ -60,6 +60,7 @@ export default async function AdminPage() {
       <div>
         <Link
           href="/logout"
+          prefetch={false}
           className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-900 transition hover:bg-slate-100"
         >
           Se déconnecter
