@@ -77,6 +77,7 @@ export default async function AdminLayout({
 
               <Link
                 href="/logout"
+                prefetch={false}
                 className="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-200 hover:text-slate-950"
               >
                 Se déconnecter
