@@ -37,13 +37,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const sessionPayload = encodeURIComponent(
-      JSON.stringify({
-        userId: user.id,
-        role: user.role,
-        email: user.email,
-      })
-    );
+    const sessionPayload = JSON.stringify({
+      userId: user.id,
+      role: user.role,
+      email: user.email,
+    });
 
     const response = NextResponse.json({
       success: true,

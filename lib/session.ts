@@ -15,7 +15,7 @@ export async function getSession(): Promise<SessionUser | null> {
   if (!value) return null;
 
   try {
-    return JSON.parse(decodeURIComponent(value)) as SessionUser;
+    return JSON.parse(value) as SessionUser;
   } catch {
     return null;
   }
