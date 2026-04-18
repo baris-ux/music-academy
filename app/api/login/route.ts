@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     const password = String(formData.get("password") || "");
 
     if (!email || !password) {
+      logger.warn({ email }, "Tentative de connexion avec champs manquants");
       return NextResponse.json(
         { error: "Email et mot de passe requis." },
         { status: 400 }
@@ -23,6 +24,7 @@ export async function POST(request: Request) {
     });
 
     if (!user) {
+      logger.warn({ email }, "Tentative de connexion avec email inconnu");
       return NextResponse.json(
         { error: "Identifiants invalides." },
         { status: 401 }
@@ -32,6 +34,7 @@ export async function POST(request: Request) {
     const isValidPassword = await argon2.verify(user.passwordHash, password);
 
     if (!isValidPassword) {
+      logger.warn({ email }, "Tentative de connexion avec mauvais mot de passe");
       return NextResponse.json(
         { error: "Identifiants invalides." },
         { status: 401 }
