@@ -57,7 +57,8 @@ export const ModelName = {
   Enrollment: 'Enrollment',
   Event: 'Event',
   Order: 'Order',
-  Ticket: 'Ticket'
+  Ticket: 'Ticket',
+  Session: 'Session'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -156,6 +157,20 @@ export const TicketScalarFieldEnum = {
 } as const
 
 export type TicketScalarFieldEnum = (typeof TicketScalarFieldEnum)[keyof typeof TicketScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  courseId: 'courseId',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  hours: 'hours',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
 export const SortOrder = {

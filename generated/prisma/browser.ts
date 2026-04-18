@@ -52,3 +52,8 @@ export type Order = Prisma.OrderModel
  * 
  */
 export type Ticket = Prisma.TicketModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
