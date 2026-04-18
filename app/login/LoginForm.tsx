@@ -35,6 +35,12 @@ export default function LoginForm() {
         return;
       }
 
+      if (result.role === "STUDENT") {
+        router.push("/student");
+        router.refresh();
+        return;
+      }
+
       router.push("/");
       router.refresh();
     } catch {
