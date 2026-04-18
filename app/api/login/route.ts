@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import argon2 from "argon2";
 import { prisma } from "@/lib/prisma";
+import logger from "@/lib/logger";
 
 const SESSION_COOKIE = "session_v3";
 
@@ -58,7 +59,8 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
-    console.error("Erreur login:", error);
+
+    logger.error({ error }, "Erreur inattendue lors de la connexion");
 
     return NextResponse.json(
       { error: "Une erreur est survenue." },

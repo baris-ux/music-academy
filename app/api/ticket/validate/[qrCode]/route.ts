@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import logger from "@/lib/logger";
 
 type RouteContext = {
   params: Promise<{
@@ -93,7 +94,7 @@ export async function GET(_: Request, { params }: RouteContext) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Erreur validation ticket :", error);
+    logger.error({ error }, "Erreur inattendue lors de la validation du billet");
 
     return NextResponse.json(
       {

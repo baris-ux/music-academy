@@ -24,18 +24,6 @@ async function createEvent(formData: FormData) {
     redirect("/login");
   }
 
-  /*
-  console.log("SESSION createEvent =", session);
-
-  if (!session) {
-    throw new Error("Session introuvable dans createEvent");
-  }
-
-  if (session.role !== "ADMIN") {
-    throw new Error("Utilisateur non admin");
-  }
-  */
-
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const location = String(formData.get("location") ?? "").trim();
