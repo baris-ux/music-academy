@@ -34,7 +34,6 @@ const gallery = [
   { src: "/images/cours_luth_1.jpg", alt: "Cours de luth" },
   { src: "/images/cours_luth_2.webp", alt: "Atelier luth" },
   { src: "/images/cours_luth_3.webp", alt: "Cours de luth en groupe" },
-  { src: "/images/image_etudiants_1.jpg", alt: "Étudiants de l'académie" },
 ];
 
 export default async function HomePage() {
