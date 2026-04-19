@@ -32,8 +32,18 @@ function CalendarPicker({
   onSelectDate: (date: string) => void;
 }) {
   const today = new Date();
-  const [viewYear, setViewYear] = useState(today.getFullYear());
-  const [viewMonth, setViewMonth] = useState(today.getMonth());
+
+  const parseView = (dateStr: string | null) => {
+    if (dateStr) {
+      const [y, m] = dateStr.split("-").map(Number);
+      return { year: y, month: m - 1 };
+    }
+    return { year: today.getFullYear(), month: today.getMonth() };
+  };
+
+  const initial = parseView(selectedDate);
+  const [viewYear, setViewYear] = useState(initial.year);
+  const [viewMonth, setViewMonth] = useState(initial.month);
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1); }
@@ -63,28 +73,14 @@ function CalendarPicker({
           {MONTHS[viewMonth]} {viewYear}
         </span>
         <div className="flex gap-1">
-          <button
-            type="button"
-            onClick={prevMonth}
-            className="rounded-lg px-2 py-1 text-slate-500 transition hover:bg-slate-200"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            onClick={nextMonth}
-            className="rounded-lg px-2 py-1 text-slate-500 transition hover:bg-slate-200"
-          >
-            ›
-          </button>
+          <button type="button" onClick={prevMonth} className="rounded-lg px-2 py-1 text-slate-500 transition hover:bg-slate-200">‹</button>
+          <button type="button" onClick={nextMonth} className="rounded-lg px-2 py-1 text-slate-500 transition hover:bg-slate-200">›</button>
         </div>
       </div>
 
       <div className="grid grid-cols-7 gap-1">
         {DAYS.map(d => (
-          <div key={d} className="py-1 text-center text-xs font-medium text-slate-400">
-            {d}
-          </div>
+          <div key={d} className="py-1 text-center text-xs font-medium text-slate-400">{d}</div>
         ))}
 
         {Array.from({ length: startOffset }).map((_, i) => (
@@ -127,9 +123,7 @@ function CalendarPicker({
         })}
 
         {Array.from({ length: trailingCells }).map((_, i) => (
-          <div key={`next-${i}`} className="py-1.5 text-center text-xs text-slate-300">
-            {i + 1}
-          </div>
+          <div key={`next-${i}`} className="py-1.5 text-center text-xs text-slate-300">{i + 1}</div>
         ))}
       </div>
     </div>
@@ -159,6 +153,19 @@ export default function SessionForm({ courses }: Props) {
   const [endTime, setEndTime] = useState("");
 
   const duration = calcDuration(startTime, endTime);
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Synchronise le calendrier et l'input date
+  const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val) setSelectedDate(val);
+    else setSelectedDate(null);
+  };
+
+  const handleCalendarSelect = (date: string) => {
+    setSelectedDate(date);
+  };
 
   return (
     <form
@@ -191,11 +198,28 @@ export default function SessionForm({ courses }: Props) {
         </select>
       </div>
 
-      {/* Calendrier */}
+      {/* Date : input + calendrier synchronisés */}
       <div>
-        <label className="mb-1 block text-sm font-medium text-slate-700">Date</label>
+        <label htmlFor="dateInput" className="mb-1 block text-sm font-medium text-slate-700">
+          Date
+        </label>
+
+        {/* Input date visible + hidden pour le form */}
         <input type="hidden" name="date" value={selectedDate ?? ""} />
-        <CalendarPicker selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+        <input
+          id="dateInput"
+          type="date"
+          min={today}
+          value={selectedDate ?? ""}
+          onChange={handleDateInput}
+          className="mb-3 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+        />
+
+        <CalendarPicker
+          selectedDate={selectedDate}
+          onSelectDate={handleCalendarSelect}
+        />
+
         {selectedDate && (
           <p className="mt-2 text-xs text-slate-500">
             Sélectionné :{" "}
