@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import SessionForm from "./SessionForm";
@@ -13,7 +14,6 @@ function formatDateTime(date: Date) {
 
 export default async function AdminSessionsPage() {
   const session = await getSession();
-
   if (!session) redirect("/login");
   if (session.role !== "ADMIN") redirect("/");
 
@@ -70,7 +70,7 @@ export default async function AdminSessionsPage() {
                   <th className="px-3 py-2 font-semibold">Fin</th>
                   <th className="px-3 py-2 font-semibold">Durée</th>
                   <th className="px-3 py-2 font-semibold">Statut</th>
-                  <th className="px-3 py-2 font-semibold">Action</th>
+                  <th className="px-3 py-2 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,7 +82,15 @@ export default async function AdminSessionsPage() {
                     <td className="px-3 py-3 text-slate-700">{item.hours} h</td>
                     <td className="px-3 py-3 text-slate-700">{item.status}</td>
                     <td className="px-3 py-3">
-                      <DeleteSessionButton id={item.id} />
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/admin/sessions/${item.id}/attendance`}
+                          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                        >
+                          ✓ Présences
+                        </Link>
+                        <DeleteSessionButton id={item.id} />
+                      </div>
                     </td>
                   </tr>
                 ))}

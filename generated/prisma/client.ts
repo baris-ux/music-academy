@@ -81,3 +81,8 @@ export type Ticket = Prisma.TicketModel
  * 
  */
 export type Session = Prisma.SessionModel
+/**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel

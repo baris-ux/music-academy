@@ -24,3 +24,13 @@ export const SessionStatus = {
 } as const
 
 export type SessionStatus = (typeof SessionStatus)[keyof typeof SessionStatus]
+
+
+export const AttendanceStatus = {
+  PRESENT: 'PRESENT',
+  ABSENT: 'ABSENT',
+  LATE: 'LATE',
+  EXCUSED: 'EXCUSED'
+} as const
+
+export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]

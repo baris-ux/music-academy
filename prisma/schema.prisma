@@ -31,6 +31,7 @@ model Student {
 
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   enrollments Enrollment[]
+  attendances Attendance[]
 }
 
 model Course {
@@ -104,6 +105,7 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  attendances Attendance[]
   @@index([courseId, startsAt])
 }
 
@@ -111,4 +113,24 @@ enum SessionStatus {
   PLANNED
   CANCELLED
   COMPLETED
+}
+
+
+model Attendance {
+  id        String           @id @default(uuid())
+  sessionId String
+  studentId String
+  status    AttendanceStatus
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  session   Session          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  @@unique([sessionId, studentId])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
 }
