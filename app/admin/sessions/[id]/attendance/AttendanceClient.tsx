@@ -9,7 +9,7 @@ type Student = {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
+  phoneNumber?: string | null;
 };
 
 type Enrollment = {
@@ -17,15 +17,14 @@ type Enrollment = {
 };
 
 type Attendance = {
-  studentId: number;
+  studentId: string;
   status: AttendanceStatus;
 };
 
 type Session = {
   id: string;
-  date: Date;
-  startTime: string;
-  endTime: string;
+  startsAt: Date;
+  endsAt: Date;
   course: { title: string; id: string };
   attendances: Attendance[];
 };
@@ -80,7 +79,7 @@ function StudentRow({
 }: {
   student: Student;
   status: AttendanceStatus | undefined;
-  onChange: (studentId: number, status: AttendanceStatus) => void;
+  onChange: (studentId: string, status: AttendanceStatus) => void;
 }) {
   const initials = `${student.firstName[0]}${student.lastName[0]}`.toUpperCase();
   const cfg = status ? STATUS_CONFIG[status] : null;
@@ -115,7 +114,9 @@ function StudentRow({
         <p className="font-semibold text-gray-900 text-sm truncate">
           {student.firstName} {student.lastName}
         </p>
-        <p className="text-xs text-gray-400 truncate">{student.email}</p>
+        {student.phoneNumber && (
+          <p className="text-xs text-gray-400 truncate">{student.phoneNumber}</p>
+        )}
       </div>
 
       {/* Badge statut */}
@@ -162,8 +163,7 @@ export default function AttendanceClient({ session, enrollments }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  // Initialise avec les présences déjà enregistrées
-  const [attendance, setAttendance] = useState<Record<number, AttendanceStatus>>(
+  const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>(
     () =>
       Object.fromEntries(
         session.attendances.map((a) => [a.studentId, a.status])
@@ -175,7 +175,6 @@ export default function AttendanceClient({ session, enrollments }: Props) {
 
   const students = enrollments.map((e) => e.student);
 
-  // Stats
   const stats = useMemo(() => {
     const counts = { PRESENT: 0, ABSENT: 0, LATE: 0, EXCUSED: 0, pending: 0 };
     students.forEach((s) => {
@@ -190,12 +189,10 @@ export default function AttendanceClient({ session, enrollments }: Props) {
     ? Math.round(((students.length - stats.pending) / students.length) * 100)
     : 0;
 
-  // Filtrage
   const filtered = useMemo(() => {
     return students.filter((s) => {
       const matchSearch =
-        `${s.firstName} ${s.lastName}`.toLowerCase().includes(search.toLowerCase()) ||
-        s.email.toLowerCase().includes(search.toLowerCase());
+        `${s.firstName} ${s.lastName}`.toLowerCase().includes(search.toLowerCase());
       const matchFilter =
         filterStatus === "all"
           ? true
@@ -206,13 +203,13 @@ export default function AttendanceClient({ session, enrollments }: Props) {
     });
   }, [students, search, filterStatus, attendance]);
 
-  const handleChange = (studentId: number, status: AttendanceStatus) => {
+  const handleChange = (studentId: string, status: AttendanceStatus) => {
     setAttendance((prev) => ({ ...prev, [studentId]: status }));
     setSavedOnce(false);
   };
 
   const handleMarkAll = (status: AttendanceStatus) => {
-    const all: Record<number, AttendanceStatus> = {};
+    const all: Record<string, AttendanceStatus> = {};
     students.forEach((s) => (all[s.id] = status));
     setAttendance(all);
     setSavedOnce(false);
@@ -228,18 +225,27 @@ export default function AttendanceClient({ session, enrollments }: Props) {
     });
   };
 
-  const dateLabel = new Date(session.date).toLocaleDateString("fr-FR", {
+  const dateLabel = new Date(session.startsAt).toLocaleDateString("fr-FR", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 
+  const startTime = new Date(session.startsAt).toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const endTime = new Date(session.endsAt).toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="max-w-2xl mx-auto space-y-5">
 
-        {/* ── Bouton retour ── */}
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
@@ -247,18 +253,14 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           ← Retour aux sessions
         </button>
 
-        {/* ── En-tête ── */}
         <div className="bg-gray-900 text-white rounded-2xl p-6">
           <p className="text-xs text-gray-400 font-medium uppercase tracking-widest mb-2">
             Prise des présences
           </p>
-          <h1 className="text-xl font-bold mb-1">{session.course.name}</h1>
+          <h1 className="text-xl font-bold mb-1">{session.course.title}</h1>
           <p className="text-sm text-gray-400 capitalize">{dateLabel}</p>
-          <p className="text-sm text-gray-400">
-            {session.startTime} – {session.endTime}
-          </p>
+          <p className="text-sm text-gray-400">{startTime} – {endTime}</p>
 
-          {/* Barre progression */}
           <div className="mt-5">
             <div className="flex justify-between text-xs text-gray-400 mb-2">
               <span>Progression</span>
@@ -277,15 +279,11 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           </div>
         </div>
 
-        {/* ── Stats ── */}
         <div className="grid grid-cols-4 gap-2">
           {ALL_STATUSES.map((s) => {
             const cfg = STATUS_CONFIG[s];
             return (
-              <div
-                key={s}
-                className="bg-white rounded-xl border border-gray-200 p-3 text-center"
-              >
+              <div key={s} className="bg-white rounded-xl border border-gray-200 p-3 text-center">
                 <p className={`text-2xl font-bold ${
                   s === "PRESENT" ? "text-green-600"
                   : s === "ABSENT" ? "text-red-600"
@@ -300,7 +298,6 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           })}
         </div>
 
-        {/* ── Actions rapides ── */}
         <div className="bg-white rounded-xl border border-gray-200 px-4 py-3 flex flex-wrap items-center gap-2">
           <span className="text-xs text-gray-500 font-medium mr-1">Tout marquer :</span>
           {ALL_STATUSES.map((s) => {
@@ -317,7 +314,6 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           })}
         </div>
 
-        {/* ── Recherche + filtre ── */}
         <div className="flex gap-2 flex-wrap">
           <input
             type="text"
@@ -341,7 +337,6 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           </select>
         </div>
 
-        {/* ── Liste ── */}
         <div className="space-y-2">
           {filtered.length === 0 ? (
             <div className="text-center py-12 text-gray-400 text-sm bg-white rounded-xl border border-gray-200">
@@ -359,7 +354,6 @@ export default function AttendanceClient({ session, enrollments }: Props) {
           )}
         </div>
 
-        {/* ── Bouton sauvegarder ── */}
         <div className="sticky bottom-4 flex justify-end">
           <button
             onClick={handleSave}
