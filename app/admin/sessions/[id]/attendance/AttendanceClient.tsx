@@ -6,7 +6,7 @@ import { saveAttendance, AttendanceStatus, AttendanceRecord } from "./actions";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type Student = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -22,11 +22,11 @@ type Attendance = {
 };
 
 type Session = {
-  id: number;
+  id: string;
   date: Date;
   startTime: string;
   endTime: string;
-  course: { name: string; id: number };
+  course: { title: string; id: string };
   attendances: Attendance[];
 };
 
