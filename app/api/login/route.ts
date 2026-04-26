@@ -31,6 +31,14 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!user.passwordHash) {
+      logger.warn({ email }, "Tentative de connexion sur un compte non activé");
+      return NextResponse.json(
+        { error: "Compte non activé. Vérifiez votre email pour activer votre compte." },
+        { status: 401 }
+      );
+    }
+
     const isValidPassword = await argon2.verify(user.passwordHash, password);
 
     if (!isValidPassword) {
