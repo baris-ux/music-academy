@@ -46,6 +46,8 @@ model Course {
 
   enrollments Enrollment[]
   sessions   Session[] 
+
+  inscriptionRequests InscriptionRequestCourse[]
 }
 
 model Enrollment {
@@ -140,15 +142,29 @@ enum AttendanceStatus {
 }
 
 model InscriptionRequest {
-  id          String                  @id @default(uuid())
-  firstName   String
-  lastName    String
-  email       String                  @unique
-  phoneNumber String?
-  message     String?
-  status      InscriptionStatus       @default(PENDING)
-  createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @updatedAt
+  id              String                     @id @default(uuid())
+  firstName       String
+  lastName        String
+  email           String                     @unique
+  phoneNumber     String?
+  isParent        Boolean                    @default(false)
+  parentFirstName String?
+  parentLastName  String?
+  message         String?
+  status          InscriptionStatus          @default(PENDING)
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  courses         InscriptionRequestCourse[]
+}
+
+model InscriptionRequestCourse {
+  id                   String             @id @default(uuid())
+  inscriptionRequestId String
+  courseId             String
+  inscriptionRequest   InscriptionRequest @relation(fields: [inscriptionRequestId], references: [id], onDelete: Cascade)
+  course               Course             @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([inscriptionRequestId, courseId])
 }
 
 enum InscriptionStatus {

@@ -393,7 +393,8 @@ export const ModelName = {
   Ticket: 'Ticket',
   Session: 'Session',
   Attendance: 'Attendance',
-  InscriptionRequest: 'InscriptionRequest'
+  InscriptionRequest: 'InscriptionRequest',
+  InscriptionRequestCourse: 'InscriptionRequestCourse'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest"
+    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest" | "inscriptionRequestCourse"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InscriptionRequestCourse: {
+      payload: Prisma.$InscriptionRequestCoursePayload<ExtArgs>
+      fields: Prisma.InscriptionRequestCourseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InscriptionRequestCourseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InscriptionRequestCourseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        findFirst: {
+          args: Prisma.InscriptionRequestCourseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InscriptionRequestCourseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        findMany: {
+          args: Prisma.InscriptionRequestCourseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>[]
+        }
+        create: {
+          args: Prisma.InscriptionRequestCourseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        createMany: {
+          args: Prisma.InscriptionRequestCourseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InscriptionRequestCourseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>[]
+        }
+        delete: {
+          args: Prisma.InscriptionRequestCourseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        update: {
+          args: Prisma.InscriptionRequestCourseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        deleteMany: {
+          args: Prisma.InscriptionRequestCourseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InscriptionRequestCourseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InscriptionRequestCourseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>[]
+        }
+        upsert: {
+          args: Prisma.InscriptionRequestCourseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestCoursePayload>
+        }
+        aggregate: {
+          args: Prisma.InscriptionRequestCourseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInscriptionRequestCourse>
+        }
+        groupBy: {
+          args: Prisma.InscriptionRequestCourseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InscriptionRequestCourseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InscriptionRequestCourseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InscriptionRequestCourseCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1309,6 +1384,9 @@ export const InscriptionRequestScalarFieldEnum = {
   lastName: 'lastName',
   email: 'email',
   phoneNumber: 'phoneNumber',
+  isParent: 'isParent',
+  parentFirstName: 'parentFirstName',
+  parentLastName: 'parentLastName',
   message: 'message',
   status: 'status',
   createdAt: 'createdAt',
@@ -1316,6 +1394,15 @@ export const InscriptionRequestScalarFieldEnum = {
 } as const
 
 export type InscriptionRequestScalarFieldEnum = (typeof InscriptionRequestScalarFieldEnum)[keyof typeof InscriptionRequestScalarFieldEnum]
+
+
+export const InscriptionRequestCourseScalarFieldEnum = {
+  id: 'id',
+  inscriptionRequestId: 'inscriptionRequestId',
+  courseId: 'courseId'
+} as const
+
+export type InscriptionRequestCourseScalarFieldEnum = (typeof InscriptionRequestCourseScalarFieldEnum)[keyof typeof InscriptionRequestCourseScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1571,6 +1658,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   attendance?: Prisma.AttendanceOmit
   inscriptionRequest?: Prisma.InscriptionRequestOmit
+  inscriptionRequestCourse?: Prisma.InscriptionRequestCourseOmit
 }
 
 /* Types for Logging */

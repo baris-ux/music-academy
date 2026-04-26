@@ -8,10 +8,10 @@ const navItems = [
   { href: "/admin", label: "Accueil" },
   { href: "/admin/students", label: "Étudiants" },
   { href: "/admin/courses", label: "Cours" },
-  { href: "/admin/enrollments", label: "Inscriptions" },
-  { href: "/admin/events", label: "Evenements" },
-  { href: "/admin/sessions", label: "Organiser une session" },
-  { href: "/admin/inscriptions", label: "Inscriptions" },
+  { href: "/admin/enrollments", label: "Associations cours / étudiants" },
+  { href: "/admin/events", label: "Événements" },
+  { href: "/admin/sessions", label: "Sessions" },
+  { href: "/admin/inscriptions", label: "Demandes d'inscription" },
 ];
 
 export default async function AdminLayout({

@@ -60,7 +60,8 @@ export const ModelName = {
   Ticket: 'Ticket',
   Session: 'Session',
   Attendance: 'Attendance',
-  InscriptionRequest: 'InscriptionRequest'
+  InscriptionRequest: 'InscriptionRequest',
+  InscriptionRequestCourse: 'InscriptionRequestCourse'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -196,6 +197,9 @@ export const InscriptionRequestScalarFieldEnum = {
   lastName: 'lastName',
   email: 'email',
   phoneNumber: 'phoneNumber',
+  isParent: 'isParent',
+  parentFirstName: 'parentFirstName',
+  parentLastName: 'parentLastName',
   message: 'message',
   status: 'status',
   createdAt: 'createdAt',
@@ -203,6 +207,15 @@ export const InscriptionRequestScalarFieldEnum = {
 } as const
 
 export type InscriptionRequestScalarFieldEnum = (typeof InscriptionRequestScalarFieldEnum)[keyof typeof InscriptionRequestScalarFieldEnum]
+
+
+export const InscriptionRequestCourseScalarFieldEnum = {
+  id: 'id',
+  inscriptionRequestId: 'inscriptionRequestId',
+  courseId: 'courseId'
+} as const
+
+export type InscriptionRequestCourseScalarFieldEnum = (typeof InscriptionRequestCourseScalarFieldEnum)[keyof typeof InscriptionRequestCourseScalarFieldEnum]
 
 
 export const SortOrder = {

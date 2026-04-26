@@ -30,6 +30,9 @@ export type InscriptionRequestMinAggregateOutputType = {
   lastName: string | null
   email: string | null
   phoneNumber: string | null
+  isParent: boolean | null
+  parentFirstName: string | null
+  parentLastName: string | null
   message: string | null
   status: $Enums.InscriptionStatus | null
   createdAt: Date | null
@@ -42,6 +45,9 @@ export type InscriptionRequestMaxAggregateOutputType = {
   lastName: string | null
   email: string | null
   phoneNumber: string | null
+  isParent: boolean | null
+  parentFirstName: string | null
+  parentLastName: string | null
   message: string | null
   status: $Enums.InscriptionStatus | null
   createdAt: Date | null
@@ -54,6 +60,9 @@ export type InscriptionRequestCountAggregateOutputType = {
   lastName: number
   email: number
   phoneNumber: number
+  isParent: number
+  parentFirstName: number
+  parentLastName: number
   message: number
   status: number
   createdAt: number
@@ -68,6 +77,9 @@ export type InscriptionRequestMinAggregateInputType = {
   lastName?: true
   email?: true
   phoneNumber?: true
+  isParent?: true
+  parentFirstName?: true
+  parentLastName?: true
   message?: true
   status?: true
   createdAt?: true
@@ -80,6 +92,9 @@ export type InscriptionRequestMaxAggregateInputType = {
   lastName?: true
   email?: true
   phoneNumber?: true
+  isParent?: true
+  parentFirstName?: true
+  parentLastName?: true
   message?: true
   status?: true
   createdAt?: true
@@ -92,6 +107,9 @@ export type InscriptionRequestCountAggregateInputType = {
   lastName?: true
   email?: true
   phoneNumber?: true
+  isParent?: true
+  parentFirstName?: true
+  parentLastName?: true
   message?: true
   status?: true
   createdAt?: true
@@ -177,6 +195,9 @@ export type InscriptionRequestGroupByOutputType = {
   lastName: string
   email: string
   phoneNumber: string | null
+  isParent: boolean
+  parentFirstName: string | null
+  parentLastName: string | null
   message: string | null
   status: $Enums.InscriptionStatus
   createdAt: Date
@@ -210,10 +231,14 @@ export type InscriptionRequestWhereInput = {
   lastName?: Prisma.StringFilter<"InscriptionRequest"> | string
   email?: Prisma.StringFilter<"InscriptionRequest"> | string
   phoneNumber?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
+  isParent?: Prisma.BoolFilter<"InscriptionRequest"> | boolean
+  parentFirstName?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
+  parentLastName?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
   message?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
   status?: Prisma.EnumInscriptionStatusFilter<"InscriptionRequest"> | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFilter<"InscriptionRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InscriptionRequest"> | Date | string
+  courses?: Prisma.InscriptionRequestCourseListRelationFilter
 }
 
 export type InscriptionRequestOrderByWithRelationInput = {
@@ -222,10 +247,14 @@ export type InscriptionRequestOrderByWithRelationInput = {
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isParent?: Prisma.SortOrder
+  parentFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentLastName?: Prisma.SortOrderInput | Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  courses?: Prisma.InscriptionRequestCourseOrderByRelationAggregateInput
 }
 
 export type InscriptionRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -237,10 +266,14 @@ export type InscriptionRequestWhereUniqueInput = Prisma.AtLeast<{
   firstName?: Prisma.StringFilter<"InscriptionRequest"> | string
   lastName?: Prisma.StringFilter<"InscriptionRequest"> | string
   phoneNumber?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
+  isParent?: Prisma.BoolFilter<"InscriptionRequest"> | boolean
+  parentFirstName?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
+  parentLastName?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
   message?: Prisma.StringNullableFilter<"InscriptionRequest"> | string | null
   status?: Prisma.EnumInscriptionStatusFilter<"InscriptionRequest"> | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFilter<"InscriptionRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InscriptionRequest"> | Date | string
+  courses?: Prisma.InscriptionRequestCourseListRelationFilter
 }, "id" | "email">
 
 export type InscriptionRequestOrderByWithAggregationInput = {
@@ -249,6 +282,9 @@ export type InscriptionRequestOrderByWithAggregationInput = {
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isParent?: Prisma.SortOrder
+  parentFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentLastName?: Prisma.SortOrderInput | Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -267,6 +303,9 @@ export type InscriptionRequestScalarWhereWithAggregatesInput = {
   lastName?: Prisma.StringWithAggregatesFilter<"InscriptionRequest"> | string
   email?: Prisma.StringWithAggregatesFilter<"InscriptionRequest"> | string
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"InscriptionRequest"> | string | null
+  isParent?: Prisma.BoolWithAggregatesFilter<"InscriptionRequest"> | boolean
+  parentFirstName?: Prisma.StringNullableWithAggregatesFilter<"InscriptionRequest"> | string | null
+  parentLastName?: Prisma.StringNullableWithAggregatesFilter<"InscriptionRequest"> | string | null
   message?: Prisma.StringNullableWithAggregatesFilter<"InscriptionRequest"> | string | null
   status?: Prisma.EnumInscriptionStatusWithAggregatesFilter<"InscriptionRequest"> | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InscriptionRequest"> | Date | string
@@ -279,10 +318,14 @@ export type InscriptionRequestCreateInput = {
   lastName: string
   email: string
   phoneNumber?: string | null
+  isParent?: boolean
+  parentFirstName?: string | null
+  parentLastName?: string | null
   message?: string | null
   status?: $Enums.InscriptionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  courses?: Prisma.InscriptionRequestCourseCreateNestedManyWithoutInscriptionRequestInput
 }
 
 export type InscriptionRequestUncheckedCreateInput = {
@@ -291,10 +334,14 @@ export type InscriptionRequestUncheckedCreateInput = {
   lastName: string
   email: string
   phoneNumber?: string | null
+  isParent?: boolean
+  parentFirstName?: string | null
+  parentLastName?: string | null
   message?: string | null
   status?: $Enums.InscriptionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  courses?: Prisma.InscriptionRequestCourseUncheckedCreateNestedManyWithoutInscriptionRequestInput
 }
 
 export type InscriptionRequestUpdateInput = {
@@ -303,10 +350,14 @@ export type InscriptionRequestUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  courses?: Prisma.InscriptionRequestCourseUpdateManyWithoutInscriptionRequestNestedInput
 }
 
 export type InscriptionRequestUncheckedUpdateInput = {
@@ -315,10 +366,14 @@ export type InscriptionRequestUncheckedUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  courses?: Prisma.InscriptionRequestCourseUncheckedUpdateManyWithoutInscriptionRequestNestedInput
 }
 
 export type InscriptionRequestCreateManyInput = {
@@ -327,6 +382,9 @@ export type InscriptionRequestCreateManyInput = {
   lastName: string
   email: string
   phoneNumber?: string | null
+  isParent?: boolean
+  parentFirstName?: string | null
+  parentLastName?: string | null
   message?: string | null
   status?: $Enums.InscriptionStatus
   createdAt?: Date | string
@@ -339,6 +397,9 @@ export type InscriptionRequestUpdateManyMutationInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,6 +412,9 @@ export type InscriptionRequestUncheckedUpdateManyInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -363,6 +427,9 @@ export type InscriptionRequestCountOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  isParent?: Prisma.SortOrder
+  parentFirstName?: Prisma.SortOrder
+  parentLastName?: Prisma.SortOrder
   message?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -375,6 +442,9 @@ export type InscriptionRequestMaxOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  isParent?: Prisma.SortOrder
+  parentFirstName?: Prisma.SortOrder
+  parentLastName?: Prisma.SortOrder
   message?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -387,16 +457,143 @@ export type InscriptionRequestMinOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  isParent?: Prisma.SortOrder
+  parentFirstName?: Prisma.SortOrder
+  parentLastName?: Prisma.SortOrder
   message?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
+export type InscriptionRequestScalarRelationFilter = {
+  is?: Prisma.InscriptionRequestWhereInput
+  isNot?: Prisma.InscriptionRequestWhereInput
+}
+
 export type EnumInscriptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.InscriptionStatus
 }
 
+export type InscriptionRequestCreateNestedOneWithoutCoursesInput = {
+  create?: Prisma.XOR<Prisma.InscriptionRequestCreateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.InscriptionRequestCreateOrConnectWithoutCoursesInput
+  connect?: Prisma.InscriptionRequestWhereUniqueInput
+}
+
+export type InscriptionRequestUpdateOneRequiredWithoutCoursesNestedInput = {
+  create?: Prisma.XOR<Prisma.InscriptionRequestCreateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.InscriptionRequestCreateOrConnectWithoutCoursesInput
+  upsert?: Prisma.InscriptionRequestUpsertWithoutCoursesInput
+  connect?: Prisma.InscriptionRequestWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InscriptionRequestUpdateToOneWithWhereWithoutCoursesInput, Prisma.InscriptionRequestUpdateWithoutCoursesInput>, Prisma.InscriptionRequestUncheckedUpdateWithoutCoursesInput>
+}
+
+export type InscriptionRequestCreateWithoutCoursesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber?: string | null
+  isParent?: boolean
+  parentFirstName?: string | null
+  parentLastName?: string | null
+  message?: string | null
+  status?: $Enums.InscriptionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InscriptionRequestUncheckedCreateWithoutCoursesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber?: string | null
+  isParent?: boolean
+  parentFirstName?: string | null
+  parentLastName?: string | null
+  message?: string | null
+  status?: $Enums.InscriptionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InscriptionRequestCreateOrConnectWithoutCoursesInput = {
+  where: Prisma.InscriptionRequestWhereUniqueInput
+  create: Prisma.XOR<Prisma.InscriptionRequestCreateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedCreateWithoutCoursesInput>
+}
+
+export type InscriptionRequestUpsertWithoutCoursesInput = {
+  update: Prisma.XOR<Prisma.InscriptionRequestUpdateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedUpdateWithoutCoursesInput>
+  create: Prisma.XOR<Prisma.InscriptionRequestCreateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedCreateWithoutCoursesInput>
+  where?: Prisma.InscriptionRequestWhereInput
+}
+
+export type InscriptionRequestUpdateToOneWithWhereWithoutCoursesInput = {
+  where?: Prisma.InscriptionRequestWhereInput
+  data: Prisma.XOR<Prisma.InscriptionRequestUpdateWithoutCoursesInput, Prisma.InscriptionRequestUncheckedUpdateWithoutCoursesInput>
+}
+
+export type InscriptionRequestUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InscriptionRequestUncheckedUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isParent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumInscriptionStatusFieldUpdateOperationsInput | $Enums.InscriptionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type InscriptionRequestCountOutputType
+ */
+
+export type InscriptionRequestCountOutputType = {
+  courses: number
+}
+
+export type InscriptionRequestCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  courses?: boolean | InscriptionRequestCountOutputTypeCountCoursesArgs
+}
+
+/**
+ * InscriptionRequestCountOutputType without action
+ */
+export type InscriptionRequestCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InscriptionRequestCountOutputType
+   */
+  select?: Prisma.InscriptionRequestCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * InscriptionRequestCountOutputType without action
+ */
+export type InscriptionRequestCountOutputTypeCountCoursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InscriptionRequestCourseWhereInput
+}
 
 
 export type InscriptionRequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -405,10 +602,15 @@ export type InscriptionRequestSelect<ExtArgs extends runtime.Types.Extensions.In
   lastName?: boolean
   email?: boolean
   phoneNumber?: boolean
+  isParent?: boolean
+  parentFirstName?: boolean
+  parentLastName?: boolean
   message?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  courses?: boolean | Prisma.InscriptionRequest$coursesArgs<ExtArgs>
+  _count?: boolean | Prisma.InscriptionRequestCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inscriptionRequest"]>
 
 export type InscriptionRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -417,6 +619,9 @@ export type InscriptionRequestSelectCreateManyAndReturn<ExtArgs extends runtime.
   lastName?: boolean
   email?: boolean
   phoneNumber?: boolean
+  isParent?: boolean
+  parentFirstName?: boolean
+  parentLastName?: boolean
   message?: boolean
   status?: boolean
   createdAt?: boolean
@@ -429,6 +634,9 @@ export type InscriptionRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.
   lastName?: boolean
   email?: boolean
   phoneNumber?: boolean
+  isParent?: boolean
+  parentFirstName?: boolean
+  parentLastName?: boolean
   message?: boolean
   status?: boolean
   createdAt?: boolean
@@ -441,23 +649,37 @@ export type InscriptionRequestSelectScalar = {
   lastName?: boolean
   email?: boolean
   phoneNumber?: boolean
+  isParent?: boolean
+  parentFirstName?: boolean
+  parentLastName?: boolean
   message?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InscriptionRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phoneNumber" | "message" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["inscriptionRequest"]>
+export type InscriptionRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phoneNumber" | "isParent" | "parentFirstName" | "parentLastName" | "message" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["inscriptionRequest"]>
+export type InscriptionRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  courses?: boolean | Prisma.InscriptionRequest$coursesArgs<ExtArgs>
+  _count?: boolean | Prisma.InscriptionRequestCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type InscriptionRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type InscriptionRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $InscriptionRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InscriptionRequest"
-  objects: {}
+  objects: {
+    courses: Prisma.$InscriptionRequestCoursePayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
     lastName: string
     email: string
     phoneNumber: string | null
+    isParent: boolean
+    parentFirstName: string | null
+    parentLastName: string | null
     message: string | null
     status: $Enums.InscriptionStatus
     createdAt: Date
@@ -856,6 +1078,7 @@ readonly fields: InscriptionRequestFieldRefs;
  */
 export interface Prisma__InscriptionRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  courses<T extends Prisma.InscriptionRequest$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InscriptionRequest$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InscriptionRequestCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -890,6 +1113,9 @@ export interface InscriptionRequestFieldRefs {
   readonly lastName: Prisma.FieldRef<"InscriptionRequest", 'String'>
   readonly email: Prisma.FieldRef<"InscriptionRequest", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"InscriptionRequest", 'String'>
+  readonly isParent: Prisma.FieldRef<"InscriptionRequest", 'Boolean'>
+  readonly parentFirstName: Prisma.FieldRef<"InscriptionRequest", 'String'>
+  readonly parentLastName: Prisma.FieldRef<"InscriptionRequest", 'String'>
   readonly message: Prisma.FieldRef<"InscriptionRequest", 'String'>
   readonly status: Prisma.FieldRef<"InscriptionRequest", 'InscriptionStatus'>
   readonly createdAt: Prisma.FieldRef<"InscriptionRequest", 'DateTime'>
@@ -911,6 +1137,10 @@ export type InscriptionRequestFindUniqueArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * Filter, which InscriptionRequest to fetch.
    */
   where: Prisma.InscriptionRequestWhereUniqueInput
@@ -929,6 +1159,10 @@ export type InscriptionRequestFindUniqueOrThrowArgs<ExtArgs extends runtime.Type
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * Filter, which InscriptionRequest to fetch.
    */
   where: Prisma.InscriptionRequestWhereUniqueInput
@@ -946,6 +1180,10 @@ export type InscriptionRequestFindFirstArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the InscriptionRequest
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
   /**
    * Filter, which InscriptionRequest to fetch.
    */
@@ -995,6 +1233,10 @@ export type InscriptionRequestFindFirstOrThrowArgs<ExtArgs extends runtime.Types
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * Filter, which InscriptionRequest to fetch.
    */
   where?: Prisma.InscriptionRequestWhereInput
@@ -1043,6 +1285,10 @@ export type InscriptionRequestFindManyArgs<ExtArgs extends runtime.Types.Extensi
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * Filter, which InscriptionRequests to fetch.
    */
   where?: Prisma.InscriptionRequestWhereInput
@@ -1085,6 +1331,10 @@ export type InscriptionRequestCreateArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the InscriptionRequest
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
   /**
    * The data needed to create a InscriptionRequest.
    */
@@ -1133,6 +1383,10 @@ export type InscriptionRequestUpdateArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the InscriptionRequest
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
   /**
    * The data needed to update a InscriptionRequest.
    */
@@ -1200,6 +1454,10 @@ export type InscriptionRequestUpsertArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * The filter to search for the InscriptionRequest to update in case it exists.
    */
   where: Prisma.InscriptionRequestWhereUniqueInput
@@ -1226,6 +1484,10 @@ export type InscriptionRequestDeleteArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
+  /**
    * Filter which InscriptionRequest to delete.
    */
   where: Prisma.InscriptionRequestWhereUniqueInput
@@ -1246,6 +1508,30 @@ export type InscriptionRequestDeleteManyArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
+ * InscriptionRequest.courses
+ */
+export type InscriptionRequest$coursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InscriptionRequestCourse
+   */
+  select?: Prisma.InscriptionRequestCourseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InscriptionRequestCourse
+   */
+  omit?: Prisma.InscriptionRequestCourseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestCourseInclude<ExtArgs> | null
+  where?: Prisma.InscriptionRequestCourseWhereInput
+  orderBy?: Prisma.InscriptionRequestCourseOrderByWithRelationInput | Prisma.InscriptionRequestCourseOrderByWithRelationInput[]
+  cursor?: Prisma.InscriptionRequestCourseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InscriptionRequestCourseScalarFieldEnum | Prisma.InscriptionRequestCourseScalarFieldEnum[]
+}
+
+/**
  * InscriptionRequest without action
  */
 export type InscriptionRequestDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1257,4 +1543,8 @@ export type InscriptionRequestDefaultArgs<ExtArgs extends runtime.Types.Extensio
    * Omit specific fields from the InscriptionRequest
    */
   omit?: Prisma.InscriptionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InscriptionRequestInclude<ExtArgs> | null
 }
