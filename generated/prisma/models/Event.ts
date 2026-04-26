@@ -462,10 +462,6 @@ export type EventScalarRelationFilter = {
   isNot?: Prisma.EventWhereInput
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type EventCreateNestedOneWithoutOrderInput = {
   create?: Prisma.XOR<Prisma.EventCreateWithoutOrderInput, Prisma.EventUncheckedCreateWithoutOrderInput>
   connectOrCreate?: Prisma.EventCreateOrConnectWithoutOrderInput

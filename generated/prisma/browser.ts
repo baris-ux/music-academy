@@ -62,3 +62,8 @@ export type Session = Prisma.SessionModel
  * 
  */
 export type Attendance = Prisma.AttendanceModel
+/**
+ * Model InscriptionRequest
+ * 
+ */
+export type InscriptionRequest = Prisma.InscriptionRequestModel

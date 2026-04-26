@@ -392,7 +392,8 @@ export const ModelName = {
   Order: 'Order',
   Ticket: 'Ticket',
   Session: 'Session',
-  Attendance: 'Attendance'
+  Attendance: 'Attendance',
+  InscriptionRequest: 'InscriptionRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance"
+    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1078,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InscriptionRequest: {
+      payload: Prisma.$InscriptionRequestPayload<ExtArgs>
+      fields: Prisma.InscriptionRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InscriptionRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InscriptionRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.InscriptionRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InscriptionRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        findMany: {
+          args: Prisma.InscriptionRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>[]
+        }
+        create: {
+          args: Prisma.InscriptionRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        createMany: {
+          args: Prisma.InscriptionRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InscriptionRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.InscriptionRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        update: {
+          args: Prisma.InscriptionRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.InscriptionRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InscriptionRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InscriptionRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.InscriptionRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InscriptionRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.InscriptionRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInscriptionRequest>
+        }
+        groupBy: {
+          args: Prisma.InscriptionRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InscriptionRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InscriptionRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InscriptionRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1122,7 +1197,10 @@ export const UserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   role: 'role',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  invitationToken: 'invitationToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  isActive: 'isActive'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1225,6 +1303,21 @@ export const AttendanceScalarFieldEnum = {
 export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
 
 
+export const InscriptionRequestScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  message: 'message',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InscriptionRequestScalarFieldEnum = (typeof InscriptionRequestScalarFieldEnum)[keyof typeof InscriptionRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1298,6 +1391,13 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1336,6 +1436,20 @@ export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'AttendanceStatus[]'
  */
 export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InscriptionStatus'
+ */
+export type EnumInscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InscriptionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'InscriptionStatus[]'
+ */
+export type ListEnumInscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InscriptionStatus[]'>
     
 
 
@@ -1456,6 +1570,7 @@ export type GlobalOmitConfig = {
   ticket?: Prisma.TicketOmit
   session?: Prisma.SessionOmit
   attendance?: Prisma.AttendanceOmit
+  inscriptionRequest?: Prisma.InscriptionRequestOmit
 }
 
 /* Types for Logging */

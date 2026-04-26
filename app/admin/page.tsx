@@ -55,6 +55,18 @@ export default async function AdminPage() {
             Associer les étudiants aux cours et suivre les inscriptions.
           </p>
         </Link>
+
+        <Link
+          href="/admin/inscriptions"
+          className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm transition hover:border-slate-400 hover:bg-slate-50"
+        >
+          <p className="text-base font-semibold text-slate-950">
+            Inscriptions
+          </p>
+          <p className="mt-1 text-sm text-slate-700">
+            Accepter ou refuser la demande d'inscription d'une personne
+          </p>
+        </Link>
       </div>
 
       <div>

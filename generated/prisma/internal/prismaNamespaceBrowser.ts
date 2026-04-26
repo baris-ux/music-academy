@@ -59,7 +59,8 @@ export const ModelName = {
   Order: 'Order',
   Ticket: 'Ticket',
   Session: 'Session',
-  Attendance: 'Attendance'
+  Attendance: 'Attendance',
+  InscriptionRequest: 'InscriptionRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -83,7 +84,10 @@ export const UserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   role: 'role',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  invitationToken: 'invitationToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  isActive: 'isActive'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -184,6 +188,21 @@ export const AttendanceScalarFieldEnum = {
 } as const
 
 export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
+export const InscriptionRequestScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  message: 'message',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InscriptionRequestScalarFieldEnum = (typeof InscriptionRequestScalarFieldEnum)[keyof typeof InscriptionRequestScalarFieldEnum]
 
 
 export const SortOrder = {

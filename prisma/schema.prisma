@@ -15,9 +15,13 @@ enum Role {
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
-  passwordHash String
+  passwordHash String?
   role         Role
   createdAt    DateTime @default(now())
+
+  invitationToken   String?   @unique  // ← token d'activation
+  tokenExpiresAt    DateTime?           // ← expiration du token
+  isActive          Boolean   @default(false) // ← compte actif ou non
 
   student Student?
 }
@@ -133,4 +137,22 @@ enum AttendanceStatus {
   ABSENT
   LATE
   EXCUSED
+}
+
+model InscriptionRequest {
+  id          String                  @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String                  @unique
+  phoneNumber String?
+  message     String?
+  status      InscriptionStatus       @default(PENDING)
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+}
+
+enum InscriptionStatus {
+  PENDING   // en attente de validation
+  ACCEPTED  // accepté → compte créé
+  REJECTED  // refusé
 }
