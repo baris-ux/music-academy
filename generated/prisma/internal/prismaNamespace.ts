@@ -394,7 +394,8 @@ export const ModelName = {
   Session: 'Session',
   Attendance: 'Attendance',
   InscriptionRequest: 'InscriptionRequest',
-  InscriptionRequestCourse: 'InscriptionRequestCourse'
+  InscriptionRequestCourse: 'InscriptionRequestCourse',
+  ScanToken: 'ScanToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest" | "inscriptionRequestCourse"
+    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest" | "inscriptionRequestCourse" | "scanToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScanToken: {
+      payload: Prisma.$ScanTokenPayload<ExtArgs>
+      fields: Prisma.ScanTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScanTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScanTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.ScanTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScanTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        findMany: {
+          args: Prisma.ScanTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>[]
+        }
+        create: {
+          args: Prisma.ScanTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        createMany: {
+          args: Prisma.ScanTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScanTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.ScanTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        update: {
+          args: Prisma.ScanTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScanTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScanTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScanTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScanTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScanTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.ScanTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScanToken>
+        }
+        groupBy: {
+          args: Prisma.ScanTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScanTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScanTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScanTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1403,6 +1478,17 @@ export const InscriptionRequestCourseScalarFieldEnum = {
 } as const
 
 export type InscriptionRequestCourseScalarFieldEnum = (typeof InscriptionRequestCourseScalarFieldEnum)[keyof typeof InscriptionRequestCourseScalarFieldEnum]
+
+
+export const ScanTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  eventId: 'eventId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ScanTokenScalarFieldEnum = (typeof ScanTokenScalarFieldEnum)[keyof typeof ScanTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1659,6 +1745,7 @@ export type GlobalOmitConfig = {
   attendance?: Prisma.AttendanceOmit
   inscriptionRequest?: Prisma.InscriptionRequestOmit
   inscriptionRequestCourse?: Prisma.InscriptionRequestCourseOmit
+  scanToken?: Prisma.ScanTokenOmit
 }
 
 /* Types for Logging */

@@ -74,6 +74,8 @@ model Event {
   createdAt   DateTime @default(now())
   tickets     Ticket[]
   order       Order[]
+
+  scanToken   ScanToken?
 }
 
 
@@ -171,4 +173,15 @@ enum InscriptionStatus {
   PENDING   // en attente de validation
   ACCEPTED  // accepté → compte créé
   REJECTED  // refusé
+}
+
+
+model ScanToken {
+  id        String   @id @default(uuid())
+  token     String   @unique @default(uuid())
+  eventId   String   @unique  // un seul token actif par événement
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }

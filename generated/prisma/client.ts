@@ -96,3 +96,8 @@ export type InscriptionRequest = Prisma.InscriptionRequestModel
  * 
  */
 export type InscriptionRequestCourse = Prisma.InscriptionRequestCourseModel
+/**
+ * Model ScanToken
+ * 
+ */
+export type ScanToken = Prisma.ScanTokenModel

@@ -61,7 +61,8 @@ export const ModelName = {
   Session: 'Session',
   Attendance: 'Attendance',
   InscriptionRequest: 'InscriptionRequest',
-  InscriptionRequestCourse: 'InscriptionRequestCourse'
+  InscriptionRequestCourse: 'InscriptionRequestCourse',
+  ScanToken: 'ScanToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -216,6 +217,17 @@ export const InscriptionRequestCourseScalarFieldEnum = {
 } as const
 
 export type InscriptionRequestCourseScalarFieldEnum = (typeof InscriptionRequestCourseScalarFieldEnum)[keyof typeof InscriptionRequestCourseScalarFieldEnum]
+
+
+export const ScanTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  eventId: 'eventId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ScanTokenScalarFieldEnum = (typeof ScanTokenScalarFieldEnum)[keyof typeof ScanTokenScalarFieldEnum]
 
 
 export const SortOrder = {
