@@ -138,7 +138,7 @@ export default async function EventsPage() {
     include: { scanToken: true },
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
+  const baseUrl = "https://music-academy-three.vercel.app";
 
   return (
     <div className="space-y-8">

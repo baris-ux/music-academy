@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 
 type Result = "idle" | "valid" | "invalid" | "already_used" | "loading";
 
 const MESSAGES: Record<Result, string> = {
-  idle: "En attente d'un billet...",
+  idle: "Pointez la caméra vers un billet",
   loading: "Vérification...",
-  valid: "✅ Billet valide",
+  valid: "✅ Billet valide — Entrée autorisée",
   invalid: "❌ Billet invalide",
-  already_used: "⚠️ Déjà utilisé",
+  already_used: "⚠️ Billet déjà utilisé",
 };
 
 const COLORS: Record<Result, string> = {
@@ -22,16 +23,35 @@ const COLORS: Record<Result, string> = {
 
 export default function ScanClient() {
   const [result, setResult] = useState<Result>("idle");
-  const [qrInput, setQrInput] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [info, setInfo] = useState<string | null>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const isProcessing = useRef(false);
 
   useEffect(() => {
-    if (result === "idle") inputRef.current?.focus();
-  }, [result]);
+    const scanner = new Html5Qrcode("qr-reader");
+    scannerRef.current = scanner;
+
+    scanner.start(
+      { facingMode: "environment" }, // caméra arrière
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      (decodedText) => {
+        if (!isProcessing.current) {
+          handleScan(decodedText);
+        }
+      },
+      () => {} // erreurs de lecture ignorées (normal pendant le scan)
+    );
+
+    return () => {
+      scanner.stop().catch(() => {});
+    };
+  }, []);
 
   async function handleScan(qrCode: string) {
-    if (!qrCode.trim() || result === "loading") return;
+    if (isProcessing.current) return;
+    isProcessing.current = true;
     setResult("loading");
+    setInfo(null);
 
     try {
       const res = await fetch(
@@ -39,37 +59,44 @@ export default function ScanClient() {
       );
       const data = await res.json();
 
-      if (res.ok && data.valid) setResult("valid");
-      else if (data.reason === "already_used") setResult("already_used");
-      else setResult("invalid");
+      if (data.status === "VALID") {
+        setResult("valid");
+        if (data.ticket?.order?.email) setInfo(data.ticket.order.email);
+      } else if (data.status === "ALREADY_USED") {
+        setResult("already_used");
+        if (data.ticket?.usedAt) {
+          const usedAt = new Date(data.ticket.usedAt).toLocaleString("fr-BE", {
+            dateStyle: "short",
+            timeStyle: "short",
+          });
+          setInfo(`Utilisé le ${usedAt}`);
+        }
+      } else {
+        setResult("invalid");
+      }
     } catch {
       setResult("invalid");
     }
 
-    setQrInput("");
-    setTimeout(() => setResult("idle"), 3000);
+    setTimeout(() => {
+      setResult("idle");
+      setInfo(null);
+      isProcessing.current = false;
+    }, 3000);
   }
 
   return (
-    <div className={`rounded-2xl border-2 p-8 text-center transition-all duration-300 ${COLORS[result]}`}>
-      <p className="text-2xl font-bold text-white mb-8">
-        {MESSAGES[result]}
-      </p>
+    <div className="space-y-4">
+      {/* Viewfinder caméra */}
+      <div className="overflow-hidden rounded-2xl border-2 border-slate-600">
+        <div id="qr-reader" className="w-full" />
+      </div>
 
-      <input
-        ref={inputRef}
-        autoFocus
-        value={qrInput}
-        onChange={(e) => setQrInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleScan(qrInput);
-        }}
-        placeholder="Scanner ou saisir le code..."
-        className="w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-3 text-white placeholder:text-slate-500 outline-none focus:border-slate-400 transition"
-      />
-      <p className="mt-3 text-xs text-slate-500">
-        Compatible douchette USB · Entrée pour valider
-      </p>
+      {/* Résultat */}
+      <div className={`rounded-2xl border-2 p-6 text-center transition-all duration-300 ${COLORS[result]}`}>
+        <p className="text-xl font-bold text-white">{MESSAGES[result]}</p>
+        {info && <p className="mt-1 text-sm text-slate-300">{info}</p>}
+      </div>
     </div>
   );
 }
