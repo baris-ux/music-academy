@@ -16,9 +16,12 @@ export async function activerCompte(formData: FormData) {
   if (password !== confirm) {
     throw new Error("Les mots de passe ne correspondent pas");
   }
-
-  if (password.length < 8) {
-    throw new Error("Le mot de passe doit faire au moins 8 caractères");
+  
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*\-_]).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    throw new Error(
+      "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (!@#$%^&*-_)"
+    );
   }
 
   const user = await prisma.user.findUnique({

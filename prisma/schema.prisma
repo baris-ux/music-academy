@@ -36,6 +36,8 @@ model Student {
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   enrollments Enrollment[]
   attendances Attendance[]
+
+  accesses ResourceAccess[]
 }
 
 model Course {
@@ -184,4 +186,28 @@ model ScanToken {
   createdAt DateTime @default(now())
 
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  fileUrl     String   // URL Vercel Blob
+  fileName    String   // nom original du fichier
+  createdAt   DateTime @default(now())
+
+  accesses ResourceAccess[]
+}
+
+model ResourceAccess {
+  id         String   @id @default(uuid())
+  resourceId String
+  studentId  String
+  createdAt  DateTime @default(now())
+
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  student  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([resourceId, studentId])
 }

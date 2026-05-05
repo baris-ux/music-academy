@@ -395,7 +395,9 @@ export const ModelName = {
   Attendance: 'Attendance',
   InscriptionRequest: 'InscriptionRequest',
   InscriptionRequestCourse: 'InscriptionRequestCourse',
-  ScanToken: 'ScanToken'
+  ScanToken: 'ScanToken',
+  Resource: 'Resource',
+  ResourceAccess: 'ResourceAccess'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest" | "inscriptionRequestCourse" | "scanToken"
+    modelProps: "user" | "student" | "course" | "enrollment" | "event" | "order" | "ticket" | "session" | "attendance" | "inscriptionRequest" | "inscriptionRequestCourse" | "scanToken" | "resource" | "resourceAccess"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1305,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Resource: {
+      payload: Prisma.$ResourcePayload<ExtArgs>
+      fields: Prisma.ResourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ResourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ResourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        findFirst: {
+          args: Prisma.ResourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ResourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        findMany: {
+          args: Prisma.ResourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+        }
+        create: {
+          args: Prisma.ResourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        createMany: {
+          args: Prisma.ResourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ResourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+        }
+        delete: {
+          args: Prisma.ResourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        update: {
+          args: Prisma.ResourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.ResourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ResourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ResourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.ResourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourcePayload>
+        }
+        aggregate: {
+          args: Prisma.ResourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateResource>
+        }
+        groupBy: {
+          args: Prisma.ResourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ResourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResourceCountAggregateOutputType> | number
+        }
+      }
+    }
+    ResourceAccess: {
+      payload: Prisma.$ResourceAccessPayload<ExtArgs>
+      fields: Prisma.ResourceAccessFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ResourceAccessFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ResourceAccessFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        findFirst: {
+          args: Prisma.ResourceAccessFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ResourceAccessFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        findMany: {
+          args: Prisma.ResourceAccessFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>[]
+        }
+        create: {
+          args: Prisma.ResourceAccessCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        createMany: {
+          args: Prisma.ResourceAccessCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ResourceAccessCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>[]
+        }
+        delete: {
+          args: Prisma.ResourceAccessDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        update: {
+          args: Prisma.ResourceAccessUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        deleteMany: {
+          args: Prisma.ResourceAccessDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ResourceAccessUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ResourceAccessUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>[]
+        }
+        upsert: {
+          args: Prisma.ResourceAccessUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResourceAccessPayload>
+        }
+        aggregate: {
+          args: Prisma.ResourceAccessAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateResourceAccess>
+        }
+        groupBy: {
+          args: Prisma.ResourceAccessGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResourceAccessGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ResourceAccessCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResourceAccessCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1489,6 +1639,28 @@ export const ScanTokenScalarFieldEnum = {
 } as const
 
 export type ScanTokenScalarFieldEnum = (typeof ScanTokenScalarFieldEnum)[keyof typeof ScanTokenScalarFieldEnum]
+
+
+export const ResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  createdAt: 'createdAt'
+} as const
+
+export type ResourceScalarFieldEnum = (typeof ResourceScalarFieldEnum)[keyof typeof ResourceScalarFieldEnum]
+
+
+export const ResourceAccessScalarFieldEnum = {
+  id: 'id',
+  resourceId: 'resourceId',
+  studentId: 'studentId',
+  createdAt: 'createdAt'
+} as const
+
+export type ResourceAccessScalarFieldEnum = (typeof ResourceAccessScalarFieldEnum)[keyof typeof ResourceAccessScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1746,6 +1918,8 @@ export type GlobalOmitConfig = {
   inscriptionRequest?: Prisma.InscriptionRequestOmit
   inscriptionRequestCourse?: Prisma.InscriptionRequestCourseOmit
   scanToken?: Prisma.ScanTokenOmit
+  resource?: Prisma.ResourceOmit
+  resourceAccess?: Prisma.ResourceAccessOmit
 }
 
 /* Types for Logging */

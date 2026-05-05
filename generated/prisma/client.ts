@@ -101,3 +101,13 @@ export type InscriptionRequestCourse = Prisma.InscriptionRequestCourseModel
  * 
  */
 export type ScanToken = Prisma.ScanTokenModel
+/**
+ * Model Resource
+ * 
+ */
+export type Resource = Prisma.ResourceModel
+/**
+ * Model ResourceAccess
+ * 
+ */
+export type ResourceAccess = Prisma.ResourceAccessModel

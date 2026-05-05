@@ -62,7 +62,9 @@ export const ModelName = {
   Attendance: 'Attendance',
   InscriptionRequest: 'InscriptionRequest',
   InscriptionRequestCourse: 'InscriptionRequestCourse',
-  ScanToken: 'ScanToken'
+  ScanToken: 'ScanToken',
+  Resource: 'Resource',
+  ResourceAccess: 'ResourceAccess'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -228,6 +230,28 @@ export const ScanTokenScalarFieldEnum = {
 } as const
 
 export type ScanTokenScalarFieldEnum = (typeof ScanTokenScalarFieldEnum)[keyof typeof ScanTokenScalarFieldEnum]
+
+
+export const ResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  createdAt: 'createdAt'
+} as const
+
+export type ResourceScalarFieldEnum = (typeof ResourceScalarFieldEnum)[keyof typeof ResourceScalarFieldEnum]
+
+
+export const ResourceAccessScalarFieldEnum = {
+  id: 'id',
+  resourceId: 'resourceId',
+  studentId: 'studentId',
+  createdAt: 'createdAt'
+} as const
+
+export type ResourceAccessScalarFieldEnum = (typeof ResourceAccessScalarFieldEnum)[keyof typeof ResourceAccessScalarFieldEnum]
 
 
 export const SortOrder = {
