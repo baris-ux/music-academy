@@ -32,6 +32,7 @@ model Student {
   firstName   String
   lastName    String
   phoneNumber String?
+  balance     Int      @default(0) // solde en centimes (ex: 1000 = 10€)
 
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   enrollments Enrollment[]

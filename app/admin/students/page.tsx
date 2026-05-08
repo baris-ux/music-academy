@@ -156,6 +156,13 @@ export default async function StudentsPage() {
                     </span>
                   </div>
 
+                  <p className="mt-1 text-sm font-medium text-slate-800">
+                    Solde dû :{" "}
+                    <span className={student.balance > 0 ? "text-red-600" : "text-green-600"}>
+                      {(student.balance / 100).toFixed(2)} €
+                    </span>
+                  </p>
+
                   <div className="flex items-center gap-2">
                     {!student.user.isActive && (
                       <form action={renvoyerInvitation}>

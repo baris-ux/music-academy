@@ -207,7 +207,7 @@ export type InscriptionRequestGroupByOutputType = {
   _max: InscriptionRequestMaxAggregateOutputType | null
 }
 
-type GetInscriptionRequestGroupByPayload<T extends InscriptionRequestGroupByArgs> = Prisma.PrismaPromise<
+export type GetInscriptionRequestGroupByPayload<T extends InscriptionRequestGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<InscriptionRequestGroupByOutputType, T['by']> &
       {
@@ -1316,6 +1316,11 @@ export type InscriptionRequestFindManyArgs<ExtArgs extends runtime.Types.Extensi
    * Skip the first `n` InscriptionRequests.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of InscriptionRequests.
+   */
   distinct?: Prisma.InscriptionRequestScalarFieldEnum | Prisma.InscriptionRequestScalarFieldEnum[]
 }
 

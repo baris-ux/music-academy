@@ -158,7 +158,7 @@ export type ScanTokenGroupByOutputType = {
   _max: ScanTokenMaxAggregateOutputType | null
 }
 
-type GetScanTokenGroupByPayload<T extends ScanTokenGroupByArgs> = Prisma.PrismaPromise<
+export type GetScanTokenGroupByPayload<T extends ScanTokenGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ScanTokenGroupByOutputType, T['by']> &
       {
@@ -1072,6 +1072,11 @@ export type ScanTokenFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` ScanTokens.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ScanTokens.
+   */
   distinct?: Prisma.ScanTokenScalarFieldEnum | Prisma.ScanTokenScalarFieldEnum[]
 }
 

@@ -144,7 +144,7 @@ export type InscriptionRequestCourseGroupByOutputType = {
   _max: InscriptionRequestCourseMaxAggregateOutputType | null
 }
 
-type GetInscriptionRequestCourseGroupByPayload<T extends InscriptionRequestCourseGroupByArgs> = Prisma.PrismaPromise<
+export type GetInscriptionRequestCourseGroupByPayload<T extends InscriptionRequestCourseGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<InscriptionRequestCourseGroupByOutputType, T['by']> &
       {
@@ -1166,6 +1166,11 @@ export type InscriptionRequestCourseFindManyArgs<ExtArgs extends runtime.Types.E
    * Skip the first `n` InscriptionRequestCourses.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of InscriptionRequestCourses.
+   */
   distinct?: Prisma.InscriptionRequestCourseScalarFieldEnum | Prisma.InscriptionRequestCourseScalarFieldEnum[]
 }
 

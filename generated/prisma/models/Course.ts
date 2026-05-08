@@ -185,7 +185,7 @@ export type CourseGroupByOutputType = {
   _max: CourseMaxAggregateOutputType | null
 }
 
-type GetCourseGroupByPayload<T extends CourseGroupByArgs> = Prisma.PrismaPromise<
+export type GetCourseGroupByPayload<T extends CourseGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CourseGroupByOutputType, T['by']> &
       {
@@ -351,14 +351,6 @@ export type CourseSumOrderByAggregateInput = {
 export type CourseScalarRelationFilter = {
   is?: Prisma.CourseWhereInput
   isNot?: Prisma.CourseWhereInput
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type CourseCreateNestedOneWithoutEnrollmentsInput = {
@@ -1288,6 +1280,11 @@ export type CourseFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` Courses.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Courses.
+   */
   distinct?: Prisma.CourseScalarFieldEnum | Prisma.CourseScalarFieldEnum[]
 }
 

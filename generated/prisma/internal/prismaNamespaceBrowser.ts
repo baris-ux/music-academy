@@ -102,7 +102,8 @@ export const StudentScalarFieldEnum = {
   userId: 'userId',
   firstName: 'firstName',
   lastName: 'lastName',
-  phoneNumber: 'phoneNumber'
+  phoneNumber: 'phoneNumber',
+  balance: 'balance'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]

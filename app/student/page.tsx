@@ -54,6 +54,13 @@ export default async function StudentPage() {
         <div className="mt-3 space-y-1 text-sm text-slate-700">
           <p><span className="font-medium text-slate-900">Nom :</span> {student.firstName} {student.lastName}</p>
           <p><span className="font-medium text-slate-900">Email :</span> {student.user.email}</p>
+
+          <p>
+            <span className="font-medium text-slate-900">Solde dû :</span>{" "}
+            <span className={student.balance > 0 ? "text-red-600 font-semibold" : "text-green-600 font-semibold"}>
+              {(student.balance / 100).toFixed(2)} €
+            </span>
+          </p>
         </div>
       </div>
 
