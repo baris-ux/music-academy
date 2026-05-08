@@ -1,109 +1,238 @@
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
-import { getSignedResourceUrl } from "@/app/admin/ressources/actions";
+import { sendInvitationEmail } from "@/lib/email";
+import crypto from "crypto";
 
-export default async function StudentPage() {
+async function deleteStudent(formData: FormData) {
+  "use server";
   const session = await getSession();
-  if (!session) redirect("/login");
-  if (session.role !== "STUDENT") redirect("/");
+  if (!session || session.role !== "ADMIN") redirect("/login");
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
 
   const student = await prisma.student.findUnique({
-    where: { userId: session.userId },
-    include: {
-      user: true,
-      enrollments: {
-        include: { course: true },
-        orderBy: { createdAt: "desc" },
-      },
-      accesses: {
-        include: { resource: true },
-        orderBy: { createdAt: "desc" },
-      },
-    },
+    where: { id },
+    include: { user: true },
+  });
+  if (!student) throw new Error("Étudiant introuvable");
+
+  await prisma.$transaction([
+    prisma.enrollment.deleteMany({ where: { studentId: id } }),
+    prisma.student.delete({ where: { id } }),
+    prisma.user.delete({ where: { id: student.user.id } }),
+  ]);
+
+  revalidatePath("/admin/students");
+}
+
+async function renvoyerInvitation(formData: FormData) {
+  "use server";
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") redirect("/login");
+
+  const userId = String(formData.get("userId") ?? "");
+  if (!userId) return;
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { student: true },
+  });
+  if (!user || !user.student) throw new Error("Étudiant introuvable");
+  if (user.isActive) throw new Error("Ce compte est déjà actif");
+
+  const invitationToken = crypto.randomBytes(32).toString("hex");
+  const tokenExpiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { invitationToken, tokenExpiresAt },
   });
 
-  if (!student) {
-    return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-semibold text-slate-950">Portail étudiant</h1>
-        <p className="text-sm text-slate-700">Aucun profil étudiant associé à ce compte.</p>
-      </div>
-    );
-  }
+  await sendInvitationEmail({
+    to: user.email,
+    firstName: user.student.firstName,
+    token: invitationToken,
+  });
 
-  // Récupération des URLs signées pour chaque ressource
-  const resourcesWithUrls = await Promise.all(
-    student.accesses.map(async (access) => ({
-      ...access.resource,
-      downloadUrl: await getSignedResourceUrl(access.resource.fileUrl),
-    }))
-  );
+  revalidatePath("/admin/students");
+}
+
+async function addEnrollment(formData: FormData) {
+  "use server";
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") redirect("/login");
+
+  const studentId = String(formData.get("studentId") ?? "");
+  const courseId = String(formData.get("courseId") ?? "");
+  if (!studentId || !courseId) return;
+
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    include: { enrollments: true },
+  });
+  if (!course) return;
+  if (course.enrollments.length >= course.capacity) return;
+
+  const existing = await prisma.enrollment.findUnique({
+    where: { studentId_courseId: { studentId, courseId } },
+  });
+  if (existing) return;
+
+  await prisma.enrollment.create({ data: { studentId, courseId } });
+  revalidatePath("/admin/students");
+}
+
+async function removeEnrollment(formData: FormData) {
+  "use server";
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") redirect("/login");
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  await prisma.enrollment.delete({ where: { id } });
+  revalidatePath("/admin/students");
+}
+
+export default async function StudentsPage() {
+  const session = await getSession();
+  if (!session) redirect("/login");
+  if (session.role !== "ADMIN") redirect("/");
+
+  const students = await prisma.student.findMany({
+    include: {
+      user: true,
+      enrollments: { include: { course: true }, orderBy: { createdAt: "asc" } },
+    },
+    orderBy: { lastName: "asc" },
+  });
+
+  const courses = await prisma.course.findMany({
+    orderBy: { title: "asc" },
+  });
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-950">Portail étudiant</h1>
+        <h1 className="text-2xl font-semibold text-slate-950">Étudiants</h1>
         <p className="mt-1 text-sm text-slate-700">
-          Bienvenue {student.firstName} {student.lastName}.
+          Consultez, gérez les comptes et les inscriptions aux cours.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-slate-300 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-950">Mes informations</h2>
-        <div className="mt-3 space-y-1 text-sm text-slate-700">
-          <p><span className="font-medium text-slate-900">Nom :</span> {student.firstName} {student.lastName}</p>
-          <p><span className="font-medium text-slate-900">Email :</span> {student.user.email}</p>
-        </div>
-      </div>
+      {students.length === 0 ? (
+        <p className="text-sm text-slate-700">Aucun étudiant pour le moment.</p>
+      ) : (
+        <div className="space-y-4">
+          {students.map((student) => {
+            const enrolledCourseIds = student.enrollments.map((e) => e.courseId);
+            const availableCourses = courses.filter(
+              (c) => !enrolledCourseIds.includes(c.id)
+            );
 
-      <div className="rounded-2xl border border-slate-300 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-950">Mes cours</h2>
-        {student.enrollments.length === 0 ? (
-          <p className="mt-3 text-sm text-slate-700">Vous n'êtes inscrit à aucun cours pour le moment.</p>
-        ) : (
-          <div className="mt-4 space-y-3">
-            {student.enrollments.map((enrollment) => (
-              <div key={enrollment.id} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                <p className="font-medium text-slate-950">{enrollment.course.title}</p>
-                <p className="text-sm text-slate-700">
-                  Inscription enregistrée le{" "}
-                  {new Date(enrollment.createdAt).toLocaleDateString("fr-BE")}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+            return (
+              <div
+                key={student.id}
+                className="rounded-2xl border border-slate-300 bg-white px-5 py-4 shadow-sm space-y-4"
+              >
+                {/* Infos étudiant */}
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-base font-semibold text-slate-950">
+                      {student.firstName} {student.lastName}
+                    </p>
+                    <p className="text-sm text-slate-700">{student.user.email}</p>
+                    <span
+                      className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        student.user.isActive
+                          ? "bg-green-100 text-green-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}
+                    >
+                      {student.user.isActive ? "Compte actif" : "En attente d'activation"}
+                    </span>
+                  </div>
 
-      <div className="rounded-2xl border border-slate-300 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-950">Mes ressources</h2>
-        {resourcesWithUrls.length === 0 ? (
-          <p className="mt-3 text-sm text-slate-700">Aucune ressource disponible pour le moment.</p>
-        ) : (
-          <div className="mt-4 space-y-3">
-            {resourcesWithUrls.map((resource) => (
-              <div key={resource.id} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-slate-950">{resource.title}</p>
-                  {resource.description && (
-                    <p className="text-sm text-slate-700">{resource.description}</p>
+                  <div className="flex items-center gap-2">
+                    {!student.user.isActive && (
+                      <form action={renvoyerInvitation}>
+                        <input type="hidden" name="userId" value={student.user.id} />
+                        <button
+                          type="submit"
+                          className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                        >
+                          Renvoyer le lien
+                        </button>
+                      </form>
+                    )}
+                    <form action={deleteStudent}>
+                      <input type="hidden" name="id" value={student.id} />
+                      <button
+                        type="submit"
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 hover:text-red-800"
+                      >
+                        Supprimer
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* Cours inscrits */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-slate-900">Cours inscrits</p>
+                  {student.enrollments.length === 0 ? (
+                    <p className="text-sm text-slate-500">Aucun cours assigné.</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {student.enrollments.map((enrollment) => (
+                        <form key={enrollment.id} action={removeEnrollment} className="inline-flex">
+                          <input type="hidden" name="id" value={enrollment.id} />
+                          <button
+                            type="submit"
+                            className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-800 hover:bg-red-50 hover:text-red-700 transition"
+                          >
+                            {enrollment.course.title}
+                            <span className="text-xs">✕</span>
+                          </button>
+                        </form>
+                      ))}
+                    </div>
                   )}
                 </div>
-                
-                <a
-                  href={resource.downloadUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-blue-600 hover:underline"
-                >
-                  Télécharger
-                </a>
+
+                {/* Ajouter un cours */}
+                {availableCourses.length > 0 && (
+                  <form action={addEnrollment} className="flex items-center gap-2">
+                    <input type="hidden" name="studentId" value={student.id} />
+                    <select
+                      name="courseId"
+                      required
+                      defaultValue=""
+                      className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+                    >
+                      <option value="" disabled>Ajouter un cours...</option>
+                      {availableCourses.map((course) => (
+                        <option key={course.id} value={course.id}>
+                          {course.title}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      type="submit"
+                      className="rounded-xl bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 transition"
+                    >
+                      Ajouter
+                    </button>
+                  </form>
+                )}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

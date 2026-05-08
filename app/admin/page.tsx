@@ -45,7 +45,7 @@ export default async function AdminPage() {
         </Link>
 
         <Link
-          href="/admin/enrollments"
+          href="/admin/students"
           className="rounded-2xl border border-slate-300 bg-white p-5 shadow-sm transition hover:border-slate-400 hover:bg-slate-50"
         >
           <p className="text-base font-semibold text-slate-950">
