@@ -3,7 +3,7 @@ import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { uploadResource, deleteResource, updateAccess, getSignedResourceUrl } from "./actions";
 import UploadForm from "./UploadForm";
-import ResourceCard from "./ResourceCard";
+import ResourcesList from "./ResourcesList";
 
 export default async function RessourcesPage() {
   const session = await getSession();
@@ -16,11 +16,7 @@ export default async function RessourcesPage() {
 
   const resources = await prisma.resource.findMany({
     include: {
-      accesses: {
-        include: {
-          student: true,
-        },
-      },
+      accesses: { include: { student: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -28,9 +24,7 @@ export default async function RessourcesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-950">
-          Ressources pédagogiques
-        </h1>
+        <h1 className="text-2xl font-semibold text-slate-950">Ressources pédagogiques</h1>
         <p className="mt-1 text-sm text-slate-700">
           Uploadez des partitions PDF et gérez les accès par élève.
         </p>
@@ -38,29 +32,13 @@ export default async function RessourcesPage() {
 
       <UploadForm uploadResource={uploadResource} />
 
-      <div>
-        <h2 className="mb-3 text-lg font-semibold text-slate-950">
-          Ressources disponibles
-        </h2>
-        <div className="space-y-3">
-          {resources.length === 0 ? (
-            <p className="text-sm text-slate-700">
-              Aucune ressource pour le moment.
-            </p>
-          ) : (
-            resources.map((resource) => (
-              <ResourceCard
-                key={resource.id}
-                resource={resource}
-                students={students}
-                updateAccess={updateAccess}
-                deleteResource={deleteResource}
-                getSignedResourceUrl={getSignedResourceUrl}
-              />
-            ))
-          )}
-        </div>
-      </div>
+      <ResourcesList
+        resources={resources}
+        students={students}
+        updateAccess={updateAccess}
+        deleteResource={deleteResource}
+        getSignedResourceUrl={getSignedResourceUrl}
+      />
     </div>
   );
 }

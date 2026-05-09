@@ -1500,7 +1500,9 @@ export const UserScalarFieldEnum = {
   createdAt: 'createdAt',
   invitationToken: 'invitationToken',
   tokenExpiresAt: 'tokenExpiresAt',
-  isActive: 'isActive'
+  isActive: 'isActive',
+  resetToken: 'resetToken',
+  resetTokenExpiresAt: 'resetTokenExpiresAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

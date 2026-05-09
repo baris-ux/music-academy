@@ -23,6 +23,9 @@ model User {
   tokenExpiresAt    DateTime?           // ← expiration du token
   isActive          Boolean   @default(false) // ← compte actif ou non
 
+  resetToken          String?   @unique
+  resetTokenExpiresAt DateTime?
+
   student Student?
 }
 

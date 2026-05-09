@@ -88,6 +88,12 @@ export default function LoginForm() {
       </div>
 
       <p className="text-center text-xs text-slate-400">
+        <a href="/forgot-password" className="text-amber-500 hover:text-amber-600 font-medium transition">
+          Mot de passe oublié ?
+        </a>
+      </p>
+
+      <p className="text-center text-xs text-slate-400">
         Pas encore de compte ?{" "}
         <a href="/contact" className="text-amber-500 hover:text-amber-600 font-medium transition">
           Contacter l'école

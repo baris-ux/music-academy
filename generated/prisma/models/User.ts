@@ -33,6 +33,8 @@ export type UserMinAggregateOutputType = {
   invitationToken: string | null
   tokenExpiresAt: Date | null
   isActive: boolean | null
+  resetToken: string | null
+  resetTokenExpiresAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -44,6 +46,8 @@ export type UserMaxAggregateOutputType = {
   invitationToken: string | null
   tokenExpiresAt: Date | null
   isActive: boolean | null
+  resetToken: string | null
+  resetTokenExpiresAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -55,6 +59,8 @@ export type UserCountAggregateOutputType = {
   invitationToken: number
   tokenExpiresAt: number
   isActive: number
+  resetToken: number
+  resetTokenExpiresAt: number
   _all: number
 }
 
@@ -68,6 +74,8 @@ export type UserMinAggregateInputType = {
   invitationToken?: true
   tokenExpiresAt?: true
   isActive?: true
+  resetToken?: true
+  resetTokenExpiresAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -79,6 +87,8 @@ export type UserMaxAggregateInputType = {
   invitationToken?: true
   tokenExpiresAt?: true
   isActive?: true
+  resetToken?: true
+  resetTokenExpiresAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -90,6 +100,8 @@ export type UserCountAggregateInputType = {
   invitationToken?: true
   tokenExpiresAt?: true
   isActive?: true
+  resetToken?: true
+  resetTokenExpiresAt?: true
   _all?: true
 }
 
@@ -174,6 +186,8 @@ export type UserGroupByOutputType = {
   invitationToken: string | null
   tokenExpiresAt: Date | null
   isActive: boolean
+  resetToken: string | null
+  resetTokenExpiresAt: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -206,6 +220,8 @@ export type UserWhereInput = {
   invitationToken?: Prisma.StringNullableFilter<"User"> | string | null
   tokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  resetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  resetTokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
 }
 
@@ -218,6 +234,8 @@ export type UserOrderByWithRelationInput = {
   invitationToken?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
 }
 
@@ -225,6 +243,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
   invitationToken?: string
+  resetToken?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -233,8 +252,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  resetTokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
-}, "id" | "email" | "invitationToken">
+}, "id" | "email" | "invitationToken" | "resetToken">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -245,6 +265,8 @@ export type UserOrderByWithAggregationInput = {
   invitationToken?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -262,6 +284,8 @@ export type UserScalarWhereWithAggregatesInput = {
   invitationToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   tokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  resetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  resetTokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -273,6 +297,8 @@ export type UserCreateInput = {
   invitationToken?: string | null
   tokenExpiresAt?: Date | string | null
   isActive?: boolean
+  resetToken?: string | null
+  resetTokenExpiresAt?: Date | string | null
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
 }
 
@@ -285,6 +311,8 @@ export type UserUncheckedCreateInput = {
   invitationToken?: string | null
   tokenExpiresAt?: Date | string | null
   isActive?: boolean
+  resetToken?: string | null
+  resetTokenExpiresAt?: Date | string | null
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -297,6 +325,8 @@ export type UserUpdateInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
 }
 
@@ -309,6 +339,8 @@ export type UserUncheckedUpdateInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -321,6 +353,8 @@ export type UserCreateManyInput = {
   invitationToken?: string | null
   tokenExpiresAt?: Date | string | null
   isActive?: boolean
+  resetToken?: string | null
+  resetTokenExpiresAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -332,6 +366,8 @@ export type UserUpdateManyMutationInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -343,6 +379,8 @@ export type UserUncheckedUpdateManyInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -354,6 +392,8 @@ export type UserCountOrderByAggregateInput = {
   invitationToken?: Prisma.SortOrder
   tokenExpiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiresAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -365,6 +405,8 @@ export type UserMaxOrderByAggregateInput = {
   invitationToken?: Prisma.SortOrder
   tokenExpiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiresAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -376,6 +418,8 @@ export type UserMinOrderByAggregateInput = {
   invitationToken?: Prisma.SortOrder
   tokenExpiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiresAt?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -430,6 +474,8 @@ export type UserCreateWithoutStudentInput = {
   invitationToken?: string | null
   tokenExpiresAt?: Date | string | null
   isActive?: boolean
+  resetToken?: string | null
+  resetTokenExpiresAt?: Date | string | null
 }
 
 export type UserUncheckedCreateWithoutStudentInput = {
@@ -441,6 +487,8 @@ export type UserUncheckedCreateWithoutStudentInput = {
   invitationToken?: string | null
   tokenExpiresAt?: Date | string | null
   isActive?: boolean
+  resetToken?: string | null
+  resetTokenExpiresAt?: Date | string | null
 }
 
 export type UserCreateOrConnectWithoutStudentInput = {
@@ -468,6 +516,8 @@ export type UserUpdateWithoutStudentInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateWithoutStudentInput = {
@@ -479,6 +529,8 @@ export type UserUncheckedUpdateWithoutStudentInput = {
   invitationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -492,6 +544,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   invitationToken?: boolean
   tokenExpiresAt?: boolean
   isActive?: boolean
+  resetToken?: boolean
+  resetTokenExpiresAt?: boolean
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -504,6 +558,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   invitationToken?: boolean
   tokenExpiresAt?: boolean
   isActive?: boolean
+  resetToken?: boolean
+  resetTokenExpiresAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -515,6 +571,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   invitationToken?: boolean
   tokenExpiresAt?: boolean
   isActive?: boolean
+  resetToken?: boolean
+  resetTokenExpiresAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -526,9 +584,11 @@ export type UserSelectScalar = {
   invitationToken?: boolean
   tokenExpiresAt?: boolean
   isActive?: boolean
+  resetToken?: boolean
+  resetTokenExpiresAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "createdAt" | "invitationToken" | "tokenExpiresAt" | "isActive", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "createdAt" | "invitationToken" | "tokenExpiresAt" | "isActive" | "resetToken" | "resetTokenExpiresAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
 }
@@ -549,6 +609,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     invitationToken: string | null
     tokenExpiresAt: Date | null
     isActive: boolean
+    resetToken: string | null
+    resetTokenExpiresAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -981,6 +1043,8 @@ export interface UserFieldRefs {
   readonly invitationToken: Prisma.FieldRef<"User", 'String'>
   readonly tokenExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly resetToken: Prisma.FieldRef<"User", 'String'>
+  readonly resetTokenExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
