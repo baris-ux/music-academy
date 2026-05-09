@@ -29,7 +29,7 @@ export default function Footer() {
                 href="mailto:contact@musicacademy.com"
                 className="hover:text-white transition"
               >
-                contact@musicacademy.com
+                vedatbayer06@hotmail.com
               </a>
             </div>
 

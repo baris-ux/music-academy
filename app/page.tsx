@@ -64,6 +64,7 @@ export default async function HomePage() {
               <Link href="/" className="transition hover:text-slate-900">Accueil</Link>
               <Link href="/event" className="transition hover:text-slate-900">Événements</Link>
               <Link href="/contact" className="transition hover:text-slate-900">Contact</Link>
+              <Link href="/inscription" className="transition hover:text-slate-900">Inscription</Link>
             </nav>
 
             <div className="flex items-center gap-2.5">
