@@ -1,164 +1,118 @@
-import Link from "next/link";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ContactForm from "./ContactForm";
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      {/* HEADER SIMPLE */}
-      <header className="border-b border-slate-200">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-lg font-semibold">
-            Académie de musique
-          </Link>
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-white text-slate-900">
 
-          <nav className="flex gap-6 text-sm text-slate-600">
-            <Link href="/">Accueil</Link>
-            <Link href="/event">Événements</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-        </div>
-      </header>
+        {/* HERO */}
+        <section className="mx-auto max-w-6xl px-6 py-16">
+          <h1 className="text-4xl font-bold">Contact & Informations</h1>
+          <p className="mt-4 text-slate-600 max-w-2xl">
+            Retrouvez toutes les informations utiles concernant nos lieux de cours,
+            nos horaires ainsi que les moyens de nous contacter.
+          </p>
+        </section>
 
-      {/* HERO */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <h1 className="text-4xl font-bold">Contact & Informations</h1>
-        <p className="mt-4 text-slate-600 max-w-2xl">
-          Retrouvez toutes les informations utiles concernant nos lieux de cours,
-          nos horaires ainsi que les moyens de nous contacter.
-        </p>
-      </section>
+        {/* ADRESSES + MAPS */}
+        <section className="bg-slate-50">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <h2 className="text-2xl font-semibold mb-10">Nos lieux de cours</h2>
 
-      {/* ADRESSES + MAPS */}
-      <section className="bg-slate-50">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <h2 className="text-2xl font-semibold mb-10">Nos lieux de cours</h2>
+            <div className="grid gap-10 md:grid-cols-2">
+              {/* Lieu 1 */}
+              <div>
+                <h3 className="text-lg font-semibold">Adresse 1</h3>
+                <p className="text-sm text-slate-600 mb-1">Rue Exemple 123, 1000 Bruxelles</p>
+                <p className="text-xs text-slate-500 mb-4">Cours du mercredi</p>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2518.214068678451!2d4.363046277172853!3d50.86423657167426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c3743f015555%3A0x9084a10d8d3ae25b!2sRue%20Liedts%2027%2C%201030%20Schaerbeek!5e0!3m2!1sfr!2sbe!4v1778337347856!5m2!1sfr!2sbe"
+                  className="w-full h-64 rounded-xl border"
+                  loading="lazy"
+                />
+              </div>
 
-          <div className="grid gap-10 md:grid-cols-2">
-            {/* Lieu 1 */}
+              {/* Lieu 2 */}
+              <div>
+                <h3 className="text-lg font-semibold">Adresse 2</h3>
+                <p className="text-sm text-slate-600 mb-1">Avenue Exemple 45, 1050 Ixelles</p>
+                <p className="text-xs text-slate-500 mb-4">Cours du dimanche</p>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2517.458352726436!2d4.396915677173519!3d50.87822657167696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c325479671cd%3A0xb8f9034e18f92558!2sRue%20de%20la%20Marne%2089%2C%201140%20Bruxelles!5e0!3m2!1sfr!2sbe!4v1778337251547!5m2!1sfr!2sbe"
+                  className="w-full h-64 rounded-xl border"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* HORAIRES */}
+        <section className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="text-2xl font-semibold mb-8">Horaires des cours</h2>
+
+          <div className="grid gap-6 md:grid-cols-2">
+
+            {/* Mercredi */}
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+              <h3 className="text-base font-semibold text-slate-900 mb-1">Mercredi</h3>
+              <p className="text-xs text-slate-500 mb-4">Adresse 1 — Rue Exemple 123, Bruxelles</p>
+              <div className="space-y-2 text-sm text-slate-700">
+                <div className="flex items-center justify-between rounded-xl bg-white border border-slate-200 px-4 py-2.5">
+                  <span>Guitare</span>
+                  <span className="font-medium">14h – 16h</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Dimanche */}
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+              <h3 className="text-base font-semibold text-slate-900 mb-1">Dimanche</h3>
+              <p className="text-xs text-slate-500 mb-4">Adresse 2 — Avenue Exemple 45, Ixelles</p>
+              <div className="space-y-2 text-sm text-slate-700">
+                <div className="flex items-center justify-between rounded-xl bg-white border border-slate-200 px-4 py-2.5">
+                  <span>Guitare</span>
+                  <span className="font-medium">12h – 14h</span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl bg-white border border-slate-200 px-4 py-2.5">
+                  <span>Luth</span>
+                  <span className="font-medium">14h – 16h</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* CONTACT + FORMULAIRE */}
+        <section className="bg-slate-50">
+          <div className="mx-auto max-w-6xl px-6 py-16 grid gap-10 md:grid-cols-2">
+            {/* INFOS */}
             <div>
-              <h3 className="text-lg font-semibold">
-                Académie principale
-              </h3>
-              <p className="text-sm text-slate-600 mb-4">
-                Rue Exemple 123, 1000 Bruxelles
+              <h2 className="text-2xl font-semibold mb-4">Nous contacter</h2>
+              <p className="text-slate-600 mb-6">
+                Une question ? Une demande d'information ? N'hésitez pas à nous
+                contacter via ce formulaire ou directement par e-mail.
               </p>
-
-              <iframe
-                src="https://www.google.com/maps?q=Bruxelles&output=embed"
-                className="w-full h-64 rounded-xl border"
-                loading="lazy"
-              />
+              <div className="space-y-3 text-sm text-slate-700">
+                <p>📧 contact@academie-musique.be</p>
+                <p>📞 +32 123 45 67 89</p>
+              </div>
+              <div className="mt-6 flex gap-4 text-sm">
+                <a href="#" className="underline">Instagram</a>
+                <a href="#" className="underline">Facebook</a>
+                <a href="#" className="underline">YouTube</a>
+              </div>
             </div>
 
-            {/* Lieu 2 */}
-            <div>
-              <h3 className="text-lg font-semibold">
-                Studio secondaire
-              </h3>
-              <p className="text-sm text-slate-600 mb-4">
-                Avenue Exemple 45, 1050 Ixelles
-              </p>
-
-              <iframe
-                src="https://www.google.com/maps?q=Ixelles&output=embed"
-                className="w-full h-64 rounded-xl border"
-                loading="lazy"
-              />
-            </div>
+            <ContactForm />
           </div>
-        </div>
-      </section>
-
-      {/* HORAIRES */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-semibold mb-6">Horaires</h2>
-
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {[
-            "Lundi : 16h - 20h",
-            "Mardi : 16h - 20h",
-            "Mercredi : 14h - 20h",
-            "Jeudi : 16h - 20h",
-            "Vendredi : 16h - 19h",
-            "Samedi : 10h - 16h",
-          ].map((horaire) => (
-            <div
-              key={horaire}
-              className="rounded-xl border border-slate-200 p-4 bg-slate-50 text-sm"
-            >
-              {horaire}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CONTACT + FORMULAIRE */}
-      <section className="bg-slate-50">
-        <div className="mx-auto max-w-6xl px-6 py-16 grid gap-10 md:grid-cols-2">
-          {/* INFOS */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">
-              Nous contacter
-            </h2>
-
-            <p className="text-slate-600 mb-6">
-              Une question ? Une demande d’information ? N’hésitez pas à nous
-              contacter via ce formulaire ou directement par e-mail.
-            </p>
-
-            <div className="space-y-3 text-sm text-slate-700">
-              <p>📧 contact@academie-musique.be</p>
-              <p>📞 +32 123 45 67 89</p>
-            </div>
-
-            {/* RÉSEAUX */}
-            <div className="mt-6 flex gap-4 text-sm">
-              <a href="#" className="underline">Instagram</a>
-              <a href="#" className="underline">Facebook</a>
-              <a href="#" className="underline">YouTube</a>
-            </div>
-          </div>
-
-          {/* FORMULAIRE */}
-          <form className="space-y-4">
-            <input
-              type="text"
-              placeholder="Nom"
-              className="w-full rounded-xl border border-slate-300 px-4 py-2"
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full rounded-xl border border-slate-300 px-4 py-2"
-            />
-
-            <textarea
-              placeholder="Votre message"
-              rows={5}
-              className="w-full rounded-xl border border-slate-300 px-4 py-2"
-            />
-
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800"
-            >
-              Envoyer
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-slate-200">
-        <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-slate-500 flex justify-between">
-          <p>© 2026 Académie de musique</p>
-          <div className="flex gap-4">
-            <Link href="/">Accueil</Link>
-            <Link href="/event">Événements</Link>
-            <Link href="/contact">Contact</Link>
-          </div>
-        </div>
-      </footer>
-    </main>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }

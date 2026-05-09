@@ -43,3 +43,33 @@ export async function sendInvitationEmail({
 
   console.log("Résultat Resend:", result);
 }
+
+export async function sendContactEmail({
+  name,
+  email,
+  message,
+}: {
+  name: string;
+  email: string;
+  message: string;
+}) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY manquant — email non envoyé");
+    return;
+  }
+
+  await resend.emails.send({
+    from: "Académie de Musique <onboarding@resend.dev>",
+    to: "vedatbayer06@hotmail.com",
+    subject: `Nouveau message de ${name}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: auto;">
+        <h2>Nouveau message de contact</h2>
+        <p><strong>Nom :</strong> ${name}</p>
+        <p><strong>Email :</strong> ${email}</p>
+        <p><strong>Message :</strong></p>
+        <p style="background:#f8f8f8;padding:12px;border-radius:8px;">${message}</p>
+      </div>
+    `,
+  });
+}

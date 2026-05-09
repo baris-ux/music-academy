@@ -1,21 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { Music, CalendarDays, MapPin, ArrowRight } from "lucide-react";
+import { Music, CalendarDays, MapPin, ArrowRight, BookOpen, Ticket, GraduationCap } from "lucide-react";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 const features = [
   {
+    icon: BookOpen,
     title: "Cours de musique",
     description:
       "Un accompagnement structuré pour progresser à votre rythme, quel que soit votre niveau.",
   },
   {
+    icon: Ticket,
     title: "Événements & concerts",
     description:
       "Consultez les événements organisés par l'académie et réservez vos billets en ligne.",
   },
   {
+    icon: GraduationCap,
     title: "Espace étudiant",
     description:
       "Accédez à vos cours, vos informations utiles et vos ressources pédagogiques.",
@@ -47,73 +51,37 @@ export default async function HomePage() {
   return (
     <>
       <main className="min-h-screen bg-[#f8f7f4] text-slate-900">
-
-        {/* ── Navbar ── */}
-        <header className="sticky top-0 z-50 border-b border-slate-200 bg-[#f8f7f4]/90 backdrop-blur">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f1923]">
-                <Music size={14} className="stroke-[#d4a85a]" />
-              </div>
-              <span className="font-sans text-base font-normal tracking-wide text-slate-900">
-                Music Academy
-              </span>
-            </Link>
-
-            <nav className="hidden items-center gap-6 text-sm text-slate-500 md:flex">
-              <Link href="/" className="transition hover:text-slate-900">Accueil</Link>
-              <Link href="/event" className="transition hover:text-slate-900">Événements</Link>
-              <Link href="/contact" className="transition hover:text-slate-900">Contact</Link>
-              <Link href="/inscription" className="transition hover:text-slate-900">Inscription</Link>
-            </nav>
-
-            <div className="flex items-center gap-2.5">
-              <Link
-                href="/login"
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
-              >
-                Se connecter
-              </Link>
-              <Link
-                href="/event"
-                className="rounded-xl bg-[#0f1923] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1a2a38]"
-              >
-                Événements
-              </Link>
-            </div>
-          </div>
-        </header>
+        <Navbar />
 
         {/* ── Hero ── */}
-        <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-          <div className="grid gap-12 md:grid-cols-2 md:items-center">
-
+        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16 md:py-24">
+          <div className="grid gap-8 md:grid-cols-2 md:items-center md:gap-12">
             <div>
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-widest text-slate-500">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-widest text-slate-500 sm:mb-5">
                 <Music size={11} className="stroke-[#d4a85a]" />
                 Académie de musique · Bruxelles
               </div>
 
-              <h1 className="fmt-6 text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
+              <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl md:text-5xl lg:text-6xl">
                 Une académie moderne, claire et accessible
               </h1>
 
-              <p className="mt-5 max-w-md text-base leading-7 text-slate-500">
+              <p className="mt-4 text-sm leading-7 text-slate-500 sm:mt-5 sm:text-base">
                 Cours de musique, billetterie en ligne et espace étudiant — tout
                 en un seul endroit, pensé pour les élèves et les visiteurs.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
                 <Link
                   href="/event"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#0f1923] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1a2a38]"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#0f1923] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#1a2a38]"
                 >
                   Réserver un billet
                   <ArrowRight size={14} />
                 </Link>
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-300"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-300"
                 >
                   Mon espace étudiant
                 </Link>
@@ -127,14 +95,14 @@ export default async function HomePage() {
                 alt="Étudiants de la Music Academy en cours"
                 width={600}
                 height={420}
-                className="h-[360px] w-full object-cover"
+                className="h-[260px] w-full object-cover sm:h-[320px] md:h-[360px]"
                 priority
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0f1923]/75 to-transparent p-5">
-                <p className="font-serif text-base font-normal text-white">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0f1923]/75 to-transparent p-4 sm:p-5">
+                <p className="font-serif text-sm font-normal text-white sm:text-base">
                   Nos étudiants en action
                 </p>
-                <p className="mt-0.5 text-[12px] text-white/55">
+                <p className="mt-0.5 text-[11px] text-white/55 sm:text-[12px]">
                   Cours individuels et collectifs · Tous niveaux
                 </p>
               </div>
@@ -143,9 +111,9 @@ export default async function HomePage() {
         </section>
 
         {/* ── Features ── */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
-          <div className="mb-8">
-            <h2 className="font-sans text-2xl font-normal text-slate-950">
+        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+          <div className="mb-6 sm:mb-8">
+            <h2 className="font-sans text-xl font-semibold text-slate-950 sm:text-2xl">
               Une plateforme pensée pour l'académie
             </h2>
             <p className="mt-2 text-sm leading-7 text-slate-500">
@@ -153,28 +121,31 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-slate-300"
-              >
-                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f1923]">
-                  <Music size={14} className="stroke-[#d4a85a]" />
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {features.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={feature.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-sm"
+                >
+                  <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-[#0f1923]">
+                    <Icon size={16} className="stroke-[#d4a85a]" />
+                  </div>
+                  <h3 className="font-semibold text-slate-900">{feature.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="font-medium text-slate-900">{feature.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
         {/* ── Galerie ── */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
-          <div className="mb-8">
-            <h2 className="font-sans text-2xl font-normal text-slate-950">
+        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+          <div className="mb-6 sm:mb-8">
+            <h2 className="font-sans text-xl font-semibold text-slate-950 sm:text-2xl">
               La vie à l'académie
             </h2>
             <p className="mt-2 text-sm leading-7 text-slate-500">
@@ -182,8 +153,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          {/* Grille asymétrique : grande image à gauche, 4 petites à droite */}
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3">
             {gallery.map((img, i) => (
               <div
                 key={img.src}
@@ -197,7 +167,7 @@ export default async function HomePage() {
                   width={800}
                   height={600}
                   className={`w-full object-cover transition duration-300 hover:scale-105 ${
-                    i === 0 ? "h-56 md:h-full md:min-h-[360px]" : "h-44"
+                    i === 0 ? "h-48 sm:h-56 md:h-full md:min-h-[360px]" : "h-36 sm:h-44"
                   }`}
                 />
               </div>
@@ -206,11 +176,11 @@ export default async function HomePage() {
         </section>
 
         {/* ── Bénéfices + image luth ── */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
+        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white md:grid md:grid-cols-2">
 
-            {/* Image luth */}
-            <div className="relative hidden h-full min-h-[300px] md:block">
+            {/* Image luth — masquée sur mobile */}
+            <div className="relative hidden h-full min-h-[280px] md:block">
               <Image
                 src="/images/cours_luth_1.jpg"
                 alt="Cours de luth à la Music Academy"
@@ -225,16 +195,27 @@ export default async function HomePage() {
               </div>
             </div>
 
+            {/* Image luth — visible sur mobile uniquement */}
+            <div className="relative h-40 md:hidden">
+              <Image
+                src="/images/cours_luth_1.jpg"
+                alt="Cours de luth à la Music Academy"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[#0f1923]/25" />
+            </div>
+
             {/* Bénéfices */}
-            <div className="p-8">
-              <h2 className="font-sanstext-2xl font-normal text-slate-950">
+            <div className="p-6 sm:p-8">
+              <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">
                 Pourquoi choisir notre académie ?
               </h2>
               <p className="mt-2 text-sm leading-7 text-slate-500">
                 Une expérience fluide pour les visiteurs, claire pour les élèves.
               </p>
 
-              <ul className="mt-6 space-y-3">
+              <ul className="mt-5 space-y-3 sm:mt-6">
                 {benefits.map((benefit) => (
                   <li key={benefit} className="flex items-center gap-3 text-sm text-slate-700">
                     <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#d4a85a]/15">
@@ -247,7 +228,7 @@ export default async function HomePage() {
 
               <Link
                 href="/contact"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                className="mt-6 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:mt-8"
               >
                 Nous contacter
                 <ArrowRight size={13} />
@@ -257,10 +238,10 @@ export default async function HomePage() {
         </section>
 
         {/* ── Événements à venir ── */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
-          <div className="mb-8 flex items-end justify-between">
+        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+          <div className="mb-6 flex items-end justify-between sm:mb-8">
             <div>
-              <h2 className="font-sans text-2xl font-normal text-slate-950">
+              <h2 className="font-sans text-xl font-semibold text-slate-950 sm:text-2xl">
                 Événements à venir
               </h2>
               <p className="mt-2 text-sm text-slate-500">
@@ -280,22 +261,22 @@ export default async function HomePage() {
               Aucun événement prévu pour le moment.
             </div>
           ) : (
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3">
               {upcomingEvents.map((event) => (
                 <article
                   key={event.id}
-                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-slate-300"
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-sm"
                 >
                   <div className="bg-[#0f1923] px-5 py-4">
                     <p className="mb-1 text-[10px] font-medium uppercase tracking-widest text-white/35">
                       Événement
                     </p>
-                    <h3 className="font-sans text-base font-normal text-white line-clamp-2">
+                    <h3 className="font-sans text-sm font-medium text-white line-clamp-2 sm:text-base">
                       {event.title}
                     </h3>
                   </div>
 
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <div className="mb-4 space-y-2">
                       <div className="flex items-center gap-2 text-[12.5px] text-slate-500">
                         <CalendarDays size={13} className="flex-shrink-0 stroke-slate-400" />
@@ -312,14 +293,14 @@ export default async function HomePage() {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-slate-100 pt-4">
-                      <span className="font-sans text-lg text-slate-900">
+                      <span className="font-sans text-base font-semibold text-slate-900 sm:text-lg">
                         {event.price === 0
                           ? "Gratuit"
                           : `${(event.price / 100).toFixed(2)} €`}
                       </span>
                       <Link
                         href={`/event/${event.id}`}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-[#0f1923] px-3.5 py-1.5 text-[12.5px] font-medium text-white transition hover:bg-[#1a2a38]"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-[#0f1923] px-3 py-1.5 text-[12px] font-medium text-white transition hover:bg-[#1a2a38]"
                       >
                         Réserver
                         <ArrowRight size={11} />
@@ -342,11 +323,11 @@ export default async function HomePage() {
         </section>
 
         {/* ── CTA final ── */}
-        <section className="mx-auto max-w-5xl px-6 pb-20">
+        <section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 sm:pb-20">
           <div className="overflow-hidden rounded-2xl bg-[#0f1923]">
             <div className="grid md:grid-cols-2">
 
-              {/* Image guitare */}
+              {/* Image guitare — masquée sur mobile */}
               <div className="relative hidden h-auto min-h-[220px] md:block">
                 <Image
                   src="/images/cours_guitare_2.jpg"
@@ -357,25 +338,25 @@ export default async function HomePage() {
               </div>
 
               {/* Texte */}
-              <div className="px-8 py-10">
-                <h2 className="font-sans text-2xl font-normal text-white">
+              <div className="px-6 py-8 sm:px-8 sm:py-10">
+                <h2 className="font-sans text-xl font-semibold text-white sm:text-2xl">
                   Prêt à rejoindre l'académie ?
                 </h2>
                 <p className="mt-2 text-sm leading-7 text-white/45">
                   Consultez les événements à venir ou connectez-vous à votre
                   espace personnel.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-5 flex flex-wrap gap-3 sm:mt-6">
                   <Link
                     href="/event"
-                    className="inline-flex items-center gap-2 rounded-xl bg-[#d4a85a] px-5 py-2.5 text-sm font-medium text-[#0f1923] transition hover:bg-[#c49a4e]"
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#d4a85a] px-4 py-2.5 text-sm font-medium text-[#0f1923] transition hover:bg-[#c49a4e]"
                   >
                     Voir les événements
                     <ArrowRight size={14} />
                   </Link>
                   <Link
                     href="/login"
-                    className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
                   >
                     Se connecter
                   </Link>

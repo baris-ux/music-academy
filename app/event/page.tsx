@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import Navbar from "../components/Navbar";
+
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +11,9 @@ export default async function EventsPublicPage() {
   });
 
   return (
+    <>
+
+    <Navbar />
     <div className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-10">
@@ -123,5 +128,6 @@ export default async function EventsPublicPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
