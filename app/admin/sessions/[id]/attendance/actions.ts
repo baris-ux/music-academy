@@ -19,7 +19,12 @@ export async function getSessionWithAttendance(sessionId: string) {
   if (!session) return null;
 
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId: session.courseId },
+    where: {
+      courseId: session.courseId,
+      createdAt: {
+        lte: session.startsAt, // ← seulement les étudiants inscrits avant la séance
+      },
+    },
     include: { student: true },
   });
 
