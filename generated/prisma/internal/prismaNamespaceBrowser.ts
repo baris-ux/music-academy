@@ -105,7 +105,8 @@ export const StudentScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   phoneNumber: 'phoneNumber',
-  balance: 'balance'
+  balance: 'balance',
+  paymentRequested: 'paymentRequested'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]

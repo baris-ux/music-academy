@@ -20,10 +20,28 @@ async function deleteStudent(formData: FormData) {
   if (!student) throw new Error("Étudiant introuvable");
 
   await prisma.$transaction([
+    prisma.resourceAccess.deleteMany({ where: { studentId: id } }),
+    prisma.attendance.deleteMany({ where: { studentId: id } }),
     prisma.enrollment.deleteMany({ where: { studentId: id } }),
     prisma.student.delete({ where: { id } }),
     prisma.user.delete({ where: { id: student.user.id } }),
   ]);
+
+  revalidatePath("/admin/students");
+}
+
+async function confirmPayment(formData: FormData) {
+  "use server";
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") redirect("/login");
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  await prisma.student.update({
+    where: { id },
+    data: { balance: 0, paymentRequested: false },
+  });
 
   revalidatePath("/admin/students");
 }
@@ -164,6 +182,17 @@ export default async function StudentsPage() {
                   </p>
 
                   <div className="flex items-center gap-2">
+                    {student.paymentRequested && (
+                      <form action={confirmPayment}>
+                        <input type="hidden" name="id" value={student.id} />
+                        <button
+                          type="submit"
+                          className="cursor-pointer rounded-lg px-3 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50 hover:text-green-800"
+                        >
+                          Confirmer le paiement
+                        </button>
+                      </form>
+                    )}
                     {!student.user.isActive && (
                       <form action={renvoyerInvitation}>
                         <input type="hidden" name="userId" value={student.user.id} />

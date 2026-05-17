@@ -42,6 +42,8 @@ model Student {
   attendances Attendance[]
 
   accesses ResourceAccess[]
+
+  paymentRequested Boolean @default(false)
 }
 
 model Course {
